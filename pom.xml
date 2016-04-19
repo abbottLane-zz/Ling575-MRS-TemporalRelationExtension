@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>relation-extraction</groupId>
+    <artifactId>relationExtractor</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <properties>
+        <cleartk.version>2.0.0</cleartk.version>
+    </properties>
+    <dependencies>
+        <dependency>
+            <groupId>org.cleartk</groupId>
+            <artifactId>cleartk-ml</artifactId>
+            <version>${cleartk.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.cleartk</groupId>
+            <artifactId>cleartk-timeml</artifactId>
+            <version>${cleartk.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.cleartk</groupId>
+            <artifactId>cleartk-examples</artifactId>
+            <version>LATEST</version>
+        </dependency>
+        <dependency>
+            <groupId>org.cleartk</groupId>
+            <artifactId>cleartk-ml-liblinear</artifactId>
+            <version>${cleartk.version}</version>
+        </dependency>
+    </dependencies>
+
+</project>
