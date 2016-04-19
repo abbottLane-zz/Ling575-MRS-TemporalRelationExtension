@@ -9,7 +9,7 @@ public class RelationExtractor {
     public static void main(String[] args){
         System.out.print("Running TempEval 2013 ClearTK-TimeML system");
         try {
-            TimeMlAnnotate.main("/home/wlane/compling/data/tempEval2013");
+            TimeMlAnnotate.main("src/main/resources/TE3-platinum-test");
         } catch (Exception e) {
             e.printStackTrace();
         }
