@@ -5,7 +5,7 @@ import org.cleartk.examples.pos.RunExamplePOSAnnotator;
 import org.cleartk.timeml.*;
 import org.cleartk.examples.*;
 
-public class hello {
+public class RelationExtractor {
     public static void main(String[] args){
         System.out.print("Running TempEval 2013 ClearTK-TimeML system");
         try {
@@ -13,7 +13,5 @@ public class hello {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-
     }
 }
