@@ -8,7 +8,6 @@ public class RelationExtractor {
 //            --test-dirs /path/to/te3-platinum
             String[] in_out = {"--train-dirs", "src/main/resources/train/TBAQ-cleaned/TimeBank","src/main/resources/train/TBAQ-cleaned/AQUAINT", "--test-dirs","src/main/resources/te3-platinum"};
             TempEval2013Evaluation.main(in_out);
-            //TimeMlAnnotate.main("src/main/resources/TE3-platinum-test");
         } catch (Exception e) {
             e.printStackTrace();
         }
