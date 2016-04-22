@@ -11,8 +11,8 @@ public class RelationExtractor {
         String platinum_test_dir = "src/main/resources/te3-platinum"; // For final performance evaluation only
 
         try {
-            String[] in_out = {"--train-dirs", timebank_dir, aquaint_dir, "--test-dirs", devtest_dir};
-            TempEval2013Evaluation.main(in_out);
+            String[] evalArgs = {"--train-dirs", timebank_dir, aquaint_dir, "--test-dirs", devtest_dir};
+            TempEval2013Evaluation.main(evalArgs);
         } catch (Exception e) {
             e.printStackTrace();
         }
