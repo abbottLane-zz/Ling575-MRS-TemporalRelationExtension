@@ -23,6 +23,11 @@
         </dependency>
         <dependency>
             <groupId>org.cleartk</groupId>
+            <artifactId>cleartk-ml-opennlp-maxent</artifactId>
+            <version>${cleartk.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.cleartk</groupId>
             <artifactId>cleartk-examples</artifactId>
             <version>LATEST</version>
         </dependency>
@@ -32,5 +37,4 @@
             <version>${cleartk.version}</version>
         </dependency>
     </dependencies>
-
 </project>
