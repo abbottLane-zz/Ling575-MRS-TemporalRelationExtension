@@ -192,7 +192,7 @@ public class OurTempEval2013Extension
 
         // create the evaluation manager
         File evalDir = new File("target/tempeval2013");
-        TempEval2013Evaluation evaluation = new TempEval2013Evaluation(
+        OurTempEval2013Extension evaluation = new OurTempEval2013Extension(
                 evalDir,
                 models,
                 options.getInferredTLinksDirectories(),
@@ -330,6 +330,11 @@ public class OurTempEval2013Extension
             // order source and target indexes, left-to-right
             Anchor source = temporalLink.getSource();
             Anchor target = temporalLink.getTarget();
+
+//            System.err.println("src text: " + source.getCoveredText() + " ID: " + source.getId());
+//            System.err.println("targ text: " + target.getCoveredText() + " ID: " + target.getId());
+//            System.err.println("RELTYPE: " + temporalLink.getRelationType());
+
             return source.getBegin() < target.getBegin()
                     ? Lists.newArrayList(source.getBegin(), source.getEnd(), target.getBegin(), target.getEnd())
                     : Lists.newArrayList(target.getBegin(), target.getEnd(), source.getBegin(), source.getEnd());
@@ -342,6 +347,8 @@ public class OurTempEval2013Extension
             // match relation with left-to-right ordering of indexes
             Anchor source = temporalLink.getSource();
             Anchor target = temporalLink.getTarget();
+
+
             return source.getBegin() < target.getBegin()
                     ? temporalLink.getRelationType()
                     : TemporalLinkAnnotator_ImplBase.REVERSE_RELATION.get(temporalLink.getRelationType());
@@ -559,7 +566,7 @@ public class OurTempEval2013Extension
             new Model.Params(LibLinearStringOutcomeDataWriter.class, "-c", "0.1", "-s", "1"),
             CLASSIFIER_PARAM_SEARCH_SPACE,
             Model.EvaluationType.INTERSECTED_SPANS,
-            Model.LoggingType.NONE,
+            Model.LoggingType.SYSTEM_PREDICTIONS,
             TemporalLink.class,
             TEMPORAL_LINK_TO_SPANS,
             TEMPORAL_LINK_TO_RELATION,
