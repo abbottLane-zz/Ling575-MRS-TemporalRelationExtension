@@ -246,11 +246,11 @@ public class OurTempEval2013Extension
                     System.err.printf("== %s %s ==\n", model.name, params);
                     System.err.println(modelStats.get(model, params));
 
-                    System.out.print(model.toString());
+                    //System.out.print(model.toString());
 
                     ConfusionMatrix<String>confusion_matrix = modelStats.get(model,params).confusions();
                     print_confusion_matrix(confusion_matrix);
-                    //System.err.println(confusion_matrix);
+                    System.err.println(confusion_matrix + "\n");
                 }
             }
         }
