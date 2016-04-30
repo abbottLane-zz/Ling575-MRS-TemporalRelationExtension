@@ -1,4 +1,5 @@
 import org.cleartk.timeml.eval.TempEval2013Evaluation;
+import org.cleartk.timeml.eval.OurTempEval2013Extension;
 
 public class RelationExtractor {
     public static void main(String[] args){
@@ -13,7 +14,11 @@ public class RelationExtractor {
         try {
             String[] evalArgs = {"--train-dirs", timebank_dir, aquaint_dir, "--test-dirs", devtest_dir};
             System.out.println("Using: " + devtest_dir + " as dev-test data");
-            TempEval2013Evaluation.main(evalArgs);
+            //TempEval2013Evaluation.main(evalArgs);
+
+
+            System.out.println("Now running our version of the extractor...");
+            OurTempEval2013Extension.main(evalArgs);
         } catch (Exception e) {
             e.printStackTrace();
         }
