@@ -246,9 +246,11 @@ public class OurTempEval2013Extension
                     System.err.printf("== %s %s ==\n", model.name, params);
                     System.err.println(modelStats.get(model, params));
 
+                    System.out.print(model.toString());
+
                     ConfusionMatrix<String>confusion_matrix = modelStats.get(model,params).confusions();
                     print_confusion_matrix(confusion_matrix);
-                    System.err.println(confusion_matrix);
+                    //System.err.println(confusion_matrix);
                 }
             }
         }
@@ -256,7 +258,6 @@ public class OurTempEval2013Extension
 
     private static void print_confusion_matrix(ConfusionMatrix<String> mat){
         System.err.print("\t\t");
-
         //Convert
         ArrayList<String> labels = new ArrayList<String>(mat.getClasses());
 
@@ -265,7 +266,8 @@ public class OurTempEval2013Extension
         }
         System.err.println();
         for(String label : labels){
-            System.err.print(label + "\t");
+            //System.err.print(label + "\t");
+            System.err.printf("%-20s\t", label);
             for(String label2 : labels){
                 System.err.print(mat.getCount(label, label2) + "\t");
             }
