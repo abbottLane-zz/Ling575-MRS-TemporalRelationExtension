@@ -26,11 +26,7 @@ package org.cleartk.timeml.eval;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Queue;
-import java.util.Set;
+import java.util.*;
 
 import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_engine.AnalysisEngine;
@@ -57,6 +53,7 @@ import org.cleartk.corpus.timeml.TempEval2013Writer;
 import org.cleartk.corpus.timeml.TimeMlGoldAnnotator;
 import org.cleartk.eval.AnnotationStatistics;
 import org.cleartk.eval.Evaluation_ImplBase;
+import org.cleartk.eval.util.ConfusionMatrix;
 import org.cleartk.ml.liblinear.LibLinearStringOutcomeDataWriter;
 import org.cleartk.opennlp.tools.ParserAnnotator;
 import org.cleartk.opennlp.tools.PosTaggerAnnotator;
@@ -248,11 +245,34 @@ public class OurTempEval2013Extension
                 for (Model.Params params : modelStats.row(model).keySet()) {
                     System.err.printf("== %s %s ==\n", model.name, params);
                     System.err.println(modelStats.get(model, params));
+
+                    ConfusionMatrix<String>confusion_matrix = modelStats.get(model,params).confusions();
+                    print_confusion_matrix(confusion_matrix);
+                    System.err.println(confusion_matrix);
                 }
             }
         }
     }
 
+    private static void print_confusion_matrix(ConfusionMatrix<String> mat){
+        System.err.print("\t\t");
+
+        //Convert
+        ArrayList<String> labels = new ArrayList<String>(mat.getClasses());
+
+        for(String label : labels){
+            System.err.print(label + "\t");
+        }
+        System.err.println();
+        for(String label : labels){
+            System.err.print(label + "\t");
+            for(String label2 : labels){
+                System.err.print(mat.getCount(label, label2) + "\t");
+            }
+            System.err.println();
+        }
+        System.err.println();
+    }
     private static List<File> listAllFiles(List<File> directories) {
         List<File> files = Lists.newArrayList();
         if (directories != null) {
