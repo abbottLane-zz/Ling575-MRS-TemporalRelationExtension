@@ -46,6 +46,8 @@ import org.cleartk.timeml.type.Event;
 import org.cleartk.timeml.util.CleartkInternalModelFactory;
 import org.cleartk.feature.syntax.SyntacticFirstChildOfGrandparentOfLeafExtractor;
 import org.cleartk.feature.syntax.SyntacticLeafToLeafPathPartsExtractor;
+import org.cleartk.timeml.uw.feature.semantics.ExplicitTemporalModifiersExtractor;
+import org.cleartk.timeml.uw.feature.semantics.SemanticPathBetweenEventsExtractor;
 import org.cleartk.token.type.Sentence;
 import org.cleartk.token.type.Token;
 import org.apache.uima.fit.factory.AnalysisEngineFactory;
@@ -95,12 +97,16 @@ public class OurTemporalLinkEventToSubordinatedEventAnnotator extends
         extractors.add(new TypePathExtractor<Event>(Event.class, "aspect"));
         extractors.add(new TypePathExtractor<Event>(Event.class, "eventClass"));
         extractors.add(new SyntacticFirstChildOfGrandparentOfLeafExtractor<Event>());
+        //TEST: extractors.add(new ExplicitTemporalModifiersExtractor<Event>());
+
+
 
         this.setSourceExtractors(extractors);
         this.setTargetExtractors(extractors);
 
         List<FeatureExtractor2<Anchor, Anchor>>btweenExtractors = Lists.newArrayList();
         btweenExtractors.add(new SyntacticLeafToLeafPathPartsExtractor<Anchor, Anchor>());
+        btweenExtractors.add(new SemanticPathBetweenEventsExtractor<Anchor, Anchor>());
         btweenExtractors.add(new CleartkExtractor<Anchor, Token>(Token.class, new CoveredTextExtractor<Token>(), new Bag(new Covered())));
         this.setBetweenExtractors(btweenExtractors);
     }
