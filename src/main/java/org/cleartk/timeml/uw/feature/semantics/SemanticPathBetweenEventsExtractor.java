@@ -47,6 +47,7 @@ public class SemanticPathBetweenEventsExtractor<T extends Annotation, U extends 
         try {
             List<Tree> toks = sentTree.readTree().getLeaves();
             originalSentence = getOriginalSentence(toks);
+            originalSentence = originalSentence.replace("\"", ""); //quotes mess up the module that speaks to python
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -67,7 +68,7 @@ public class SemanticPathBetweenEventsExtractor<T extends Annotation, U extends 
         //Catch the output of the python script
         try {
             pythonReply = execToString(line);
-            System.out.println(pythonReply);
+            System.out.println("PYTH: " + pythonReply);
         } catch (IOException e) {
             e.printStackTrace();
         } catch (Exception e) {
@@ -93,7 +94,7 @@ public class SemanticPathBetweenEventsExtractor<T extends Annotation, U extends 
 
             sb.append(toks.get(i).toString());
             if(i+1 < toks.size()){
-                if(!toks.get(i+1).toString().equals(",") && !toks.get(i+1).toString().equals("'") && !toks.get(i+1).toString().equals("."))
+                if(!toks.get(i+1).toString().equals(",") && !toks.get(i+1).toString().equals("'") && !toks.get(i+1).toString().equals(".") && !toks.get(i+1).toString().equals("n\'t") && !toks.get(i+1).toString().equals("\'s"))
                 sb.append(" ");
             }
         }
