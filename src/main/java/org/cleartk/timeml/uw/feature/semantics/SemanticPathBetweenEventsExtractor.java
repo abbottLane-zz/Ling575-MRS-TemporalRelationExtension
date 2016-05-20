@@ -36,15 +36,13 @@ public class SemanticPathBetweenEventsExtractor<T extends Annotation, U extends 
 
         List<Feature> features = new ArrayList<Feature>();
 
-
+        //Derive the sentance from which the events come
         TreebankNode sourceNode = TreebankNodeUtil.selectMatchingLeaf(jCas, source);
         TreebankNode topNode = TreebankNodeUtil.getTopNode(sourceNode);
-
         String sentenceParseString = TreebankNodeUtil.toTreebankString(topNode);
-
         PennTreeReader sentTree = new PennTreeReader(new StringReader(sentenceParseString), new LabeledScoredTreeFactory());
 
-
+        // Reform the original sentence from the PTB tree
         String originalSentence = "";
         try {
             List<Tree> toks = sentTree.readTree().getLeaves();
@@ -53,15 +51,20 @@ public class SemanticPathBetweenEventsExtractor<T extends Annotation, U extends 
             e.printStackTrace();
         }
 
-        System.out.println(originalSentence);
-        System.out.println("\tSOURCE: (" + source.getBegin() + ", " + source.getEnd() + ") " + source.getCoveredText() + "\n\tTARGET: (" + target.getBegin() + "," + target.getEnd() + ")" + target.getCoveredText());
-
         // Pass event and sentence info to python script
-        String line = "python3 ./src/main/resources/PythonScripts/test.py";
+        String e1 = source.getCoveredText();
+        String e2 = target.getCoveredText();
+        int e1_begin = source.getBegin();
+        int e1_end = source.getEnd();
+        int e2_begin = target.getBegin();
+        int e2_end = target.getEnd();
+        String line = "python3 ./src/main/resources/PythonScripts/get_ace_features.py "+ e1 + " " + e1_begin + " " +e1_end + " " + e2+ " " + e2_begin + " " + e2_end + " \""+ originalSentence + "\"";
         CommandLine cmdLine = CommandLine.parse(line);
         DefaultExecutor executor = new DefaultExecutor();
         executor.setExitValue(0);
         String pythonReply = "no response from python script";
+
+        //Catch the output of the python script
         try {
             pythonReply = execToString(line);
             System.out.println(pythonReply);
@@ -71,6 +74,7 @@ public class SemanticPathBetweenEventsExtractor<T extends Annotation, U extends 
             e.printStackTrace();
         }
 
+        //convert python script output to Feature objects
         return features;
     }
     public String execToString(String command) throws Exception {
