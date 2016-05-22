@@ -1,4 +1,4 @@
-#!/bin/python3
+#!/opt/python-3.4/bin/python3
 
 """%prog [--help] <e1> <e1_begin> <e1_end> <e2> <e2_begin> <e2_end> [<"sentence">]"""
 
@@ -12,40 +12,22 @@ __author__ = 'Martin J. Horn'
 
 
 def output_features(features):
-    str=""
     for feat in features:
-        str += feat + " "
-    print(str)
-    sys.stdout.flush()
+        print(feat)
 
 
 def extract_features(e1, e1_b, e1_e, e2, e2_b, e2_e, ace_result):
-    #print("a1"+ace_result)
     features = []
     mrs = simplemrs.loads_one(ace_result)
-    #print("mrs obj:" + str(mrs))
     ep_1, ep_2 = None, None
     for ep in mrs.eps():
-        #print("an ep:" + str(ep))
-        #print("is (ep.cfrom=", ep.cfrom, ") <= (e1_b=", e1_b+1, ") <= (ep.cto", ep.cto, ")? ", ep.cfrom <= e1_b <= ep.cto, " AND, (ep.pred.pos == 'n' or ep.pred.pos == 'v')? ", (ep.pred.pos == 'n' or ep.pred.pos == 'v') )
-        if ep.cfrom <= e1_b+1 <= ep.cto and (ep.pred.pos == 'n' or ep.pred.pos == 'v'):
-            #print(str(ep) + "matched with " ,str(e1))
+        if ep.cfrom <= e1_b < ep.cto and (ep.pred.pos == 'n' or ep.pred.pos == 'v'):
             ep_1 = ep
             continue
-        elif ep.cfrom <= e2_b+1 <= ep.cto and (ep.pred.pos == 'n' or ep.pred.pos == 'v'):
-            #print(str(ep) + "matched with " ,str(e2))
+        elif ep.cfrom <= e2_b < ep.cto and (ep.pred.pos == 'n' or ep.pred.pos == 'v'):
             ep_2 = ep
             break
-        # if ep:
-        #     ep_1=ep
-        #     #print("ep1 declared")
-        # if ep:
-        #     ep_2=ep
-        #     #print("ep2 declared")
-
-    #print("a2")
     if ep_1 and ep_2:
-        #print("a3")
         feat_1 = "e1=" + ep_1.pred.lemma
         feat_2 = "e2=" + ep_2.pred.lemma
         features.append(feat_1)
@@ -59,19 +41,18 @@ def extract_features(e1, e1_b, e1_e, e2, e2_b, e2_e, ace_result):
         args_1 = mrs.args(ep_1.nodeid)
         args_2 = mrs.args(ep_2.nodeid)
         feat = None
-        #print("a4")
         for arg in args_1:
             if ep_2.label == args_1[arg] or args_2['ARG0'] == args_1[arg]:
                 feat = "e1:"+ep_1.pred.pos+"["+arg+"->e2:"+ep_2.pred.pos + "]"
-                #print(feat)
+                print(feat)
                 features.append(feat)
         if not feat:
             for arg in args_2:
                 if ep_1.label == args_2[arg] or args_1['ARG0'] == args_2[arg]:
                     feat = "e2:"+ep_2.pred.pos+":"+arg+":e1"+ep_1.pred.pos
-                    #print(feat)
+                    print(feat)
                     features.append(feat)
-        #print("a5")
+
         paths = find_paths(mrs, ep_1, ep_2, "")
         if paths:
             shortest_path = paths[0]
@@ -82,14 +63,13 @@ def extract_features(e1, e1_b, e1_e, e2, e2_b, e2_e, ace_result):
             shortest_path = "PATH:NO_PATH"
         features.append("PATH:" + shortest_path)
 
-    #print("a6")
     return features
 
 
 seen_ids = set()
 
 
-def find_paths(mrs, ep_1, ep_2, cur_path):
+def find_paths(mrs, ep_1, ep_2, cur_path, count=0):
     # Recursive path search using incoming args of second event
     paths = []
     if len(cur_path) == 0:
@@ -110,13 +90,15 @@ def find_paths(mrs, ep_1, ep_2, cur_path):
 
     for node_id in in_args:
         global seen_ids
-        if node_id not in seen_ids:
+        if node_id not in seen_ids and count < 10:
             if mrs.ep(node_id).label != ep_1.label and mrs.ep(node_id).iv != ep_1.iv:
                 for arg in in_args[node_id]:
                     prefix = arg + ":"
                     break
                 seen_ids.add(node_id)
-                paths += find_paths(mrs, ep_1, mrs.ep(node_id), prefix+cur_path)
+                count += 1
+                print(count)
+                paths += find_paths(mrs, ep_1, mrs.ep(node_id), prefix+cur_path, count)
             else:
                 for arg in in_args[node_id]:
                     prefix = arg + ":"
@@ -135,8 +117,8 @@ def find_paths(mrs, ep_1, ep_2, cur_path):
 
 
 def run_ace(sentence):
-    ace_bin = "/home/wlane/Programs/ace-0.9.22/ace"
-    erg_file = "/home/wlane/Programs/ace-0.9.22/erg-1214-x86-64-0.9.22.dat"
+    ace_bin = "/Applications/ace/ace-0.9.22/ace"
+    erg_file = "/Applications/ace/ace-0.9.22/erg-1214-osx-0.9.22.dat"
     results = ace.parse(erg_file, sentence, cmdargs=['-n', '1'], executable=ace_bin)['RESULTS']
     if results:
         res1 = ace.parse(erg_file, sentence, cmdargs=['-n', '1'], executable=ace_bin)['RESULTS'][0]['MRS']
