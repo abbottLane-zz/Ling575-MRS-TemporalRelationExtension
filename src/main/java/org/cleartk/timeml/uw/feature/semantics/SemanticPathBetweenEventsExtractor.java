@@ -13,6 +13,7 @@ import edu.stanford.nlp.trees.PennTreeReader;
 import edu.stanford.nlp.trees.Tree;
 import org.apache.commons.exec.CommandLine;
 import org.apache.commons.exec.DefaultExecutor;
+import org.apache.commons.exec.ExecuteWatchdog;
 import org.apache.commons.exec.PumpStreamHandler;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.cas.StringArray;
@@ -48,6 +49,9 @@ public class SemanticPathBetweenEventsExtractor<T extends Annotation, U extends 
             List<Tree> toks = sentTree.readTree().getLeaves();
             originalSentence = getOriginalSentence(toks);
             originalSentence = originalSentence.replace("\"", ""); //quotes mess up the module that speaks to python
+            originalSentence = originalSentence.replace("\'\'", "");
+            originalSentence = originalSentence.replace("_", "");
+            originalSentence = originalSentence.replace("``", "");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -55,14 +59,17 @@ public class SemanticPathBetweenEventsExtractor<T extends Annotation, U extends 
         // Pass event and sentence info to python script
         String e1 = source.getCoveredText();
         String e2 = target.getCoveredText();
-        int e1_begin = source.getBegin();
-        int e1_end = source.getEnd();
-        int e2_begin = target.getBegin();
-        int e2_end = target.getEnd();
-        String line = "python3 ./src/main/resources/PythonScripts/get_ace_features.py "+ e1 + " " + e1_begin + " " +e1_end + " " + e2+ " " + e2_begin + " " + e2_end + " \""+ originalSentence + "\"";
+        int e1_begin = originalSentence.indexOf(e1);
+        int e1_end = originalSentence.indexOf(e1) + e1.length();
+        int e2_begin = originalSentence.indexOf(e2);
+        int e2_end = originalSentence.indexOf(e2)+e2.length();
+
+        // Create python cmd line command
+        String line = "python3 ./src/main/resources/PythonScripts/feature_extractor.py "+ e1 + " " + e1_begin + " " +e1_end + " " + e2+ " " + e2_begin + " " + e2_end + " \""+ originalSentence + "\"";
+
+//        line = "/home/wlane/IdeaProjects/relation_extractor/src/main/resources/ace/ace  -g /home/wlane/IdeaProjects/relation_extractor/src/main/resources/ace/erg-1214-x86-64-0.9.22.dat -1Tf \n" + originalSentence+" \n";
+        System.out.println("JAVA:" + line);
         CommandLine cmdLine = CommandLine.parse(line);
-        DefaultExecutor executor = new DefaultExecutor();
-        executor.setExitValue(0);
         String pythonReply = "no response from python script";
 
         //Catch the output of the python script
@@ -76,12 +83,20 @@ public class SemanticPathBetweenEventsExtractor<T extends Annotation, U extends 
         }
 
         //convert python script output to Feature objects
+        String[] feats = pythonReply.split("\\s+");
+        for(String feature : feats)
+        {
+            features.add(new Feature("semanticFeats", feature));
+        }
         return features;
     }
     public String execToString(String command) throws Exception {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         CommandLine commandline = CommandLine.parse(command);
         DefaultExecutor exec = new DefaultExecutor();
+        ExecuteWatchdog watchdog = new ExecuteWatchdog(30*1000);
+        exec.setWatchdog(watchdog);
+        exec.setExitValue(0);
         PumpStreamHandler streamHandler = new PumpStreamHandler(outputStream);
         exec.setStreamHandler(streamHandler);
         exec.execute(commandline);
@@ -93,8 +108,9 @@ public class SemanticPathBetweenEventsExtractor<T extends Annotation, U extends 
         for(int i = 0; i < toks.size(); i++){
 
             sb.append(toks.get(i).toString());
+
             if(i+1 < toks.size()){
-                if(!toks.get(i+1).toString().equals(",") && !toks.get(i+1).toString().equals("'") && !toks.get(i+1).toString().equals(".") && !toks.get(i+1).toString().equals("n\'t") && !toks.get(i+1).toString().equals("\'s"))
+                if(!toks.get(i+1).toString().equals(",") && !toks.get(i+1).toString().equals("'") && !toks.get(i+1).toString().equals(".") && !toks.get(i+1).toString().equals("n\'t") && !toks.get(i+1).toString().equals("\'s") && !toks.get(i+1).toString().equals("\'ll"))
                 sb.append(" ");
             }
         }
