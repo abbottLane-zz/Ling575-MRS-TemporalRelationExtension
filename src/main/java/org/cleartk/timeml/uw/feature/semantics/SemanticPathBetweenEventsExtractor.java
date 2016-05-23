@@ -65,7 +65,7 @@ public class SemanticPathBetweenEventsExtractor<T extends Annotation, U extends 
         int e2_end = originalSentence.indexOf(e2)+e2.length();
 
         // Create python cmd line command
-        String line = "python3 ./src/main/resources/PythonScripts/feature_extractor.py "+ e1 + " " + e1_begin + " " +e1_end + " " + e2+ " " + e2_begin + " " + e2_end + " \""+ originalSentence + "\"";
+        String line = "python3 /home/wlane/IdeaProjects/Ling575-MRS-TemporalRelationExtension/src/main/resources/PythonScripts/feature_extractor.py "+ e1 + " " + e1_begin + " " +e1_end + " " + e2+ " " + e2_begin + " " + e2_end + " \""+ originalSentence + "\"";
 
 //        line = "/home/wlane/IdeaProjects/relation_extractor/src/main/resources/ace/ace  -g /home/wlane/IdeaProjects/relation_extractor/src/main/resources/ace/erg-1214-x86-64-0.9.22.dat -1Tf \n" + originalSentence+" \n";
         System.out.println("JAVA:" + line);

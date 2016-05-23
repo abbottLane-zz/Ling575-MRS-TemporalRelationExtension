@@ -47,7 +47,7 @@ def extract_features(e1, e1_b, e1_e, e2, e2_b, e2_e, ace_result):
     if ep_1 and ep_2:
         #print("a3")
         feat_1 = "e1=" + ep_1.pred.lemma
-        feat_2 = "e2" + ep_2.pred.lemma
+        feat_2 = "e2=" + ep_2.pred.lemma
         features.append(feat_1)
         features.append(feat_2)
         for prop in mrs.properties(ep_1.iv):
