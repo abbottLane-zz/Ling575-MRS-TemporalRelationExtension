@@ -47,14 +47,14 @@ def extract_features(e1, e1_b, e1_e, e2, e2_b, e2_e, ace_result):
     if ep_1 and ep_2:
         #print("a3")
         feat_1 = "e1=" + ep_1.pred.lemma
-        feat_2 = "e2=" + ep_2.pred.lemma
+        feat_2 = "e2" + ep_2.pred.lemma
         features.append(feat_1)
         features.append(feat_2)
         for prop in mrs.properties(ep_1.iv):
-            feat = "e1:" + prop + ":" + mrs.properties(ep_1.iv)[prop]
+            feat = "e1#" + prop + "#" + mrs.properties(ep_1.iv)[prop]
             features.append(feat)
         for prop in mrs.properties(ep_2.iv):
-            feat = "e2:" + prop + ":" + mrs.properties(ep_2.iv)[prop]
+            feat = "e2#" + prop + "#" + mrs.properties(ep_2.iv)[prop]
             features.append(feat)
         args_1 = mrs.args(ep_1.nodeid)
         args_2 = mrs.args(ep_2.nodeid)
@@ -62,13 +62,13 @@ def extract_features(e1, e1_b, e1_e, e2, e2_b, e2_e, ace_result):
         #print("a4")
         for arg in args_1:
             if ep_2.label == args_1[arg] or args_2['ARG0'] == args_1[arg]:
-                feat = "e1:"+ep_1.pred.pos+"["+arg+"->e2:"+ep_2.pred.pos + "]"
+                feat = "e1#"+ep_1.pred.pos+"["+arg+"->e2#"+ep_2.pred.pos + "]"
                 #print(feat)
                 features.append(feat)
         if not feat:
             for arg in args_2:
                 if ep_1.label == args_2[arg] or args_1['ARG0'] == args_2[arg]:
-                    feat = "e2:"+ep_2.pred.pos+":"+arg+":e1"+ep_1.pred.pos
+                    feat = "e2#"+ep_2.pred.pos+"#"+arg+"#e1"+ep_1.pred.pos
                     #print(feat)
                     features.append(feat)
         #print("a5")
@@ -79,8 +79,8 @@ def extract_features(e1, e1_b, e1_e, e2, e2_b, e2_e, ace_result):
                 if len(path.split(",")) < len(shortest_path.split(",")):
                     shortest_path = path
         else:
-            shortest_path = "PATH:NO_PATH"
-        features.append("PATH:" + shortest_path)
+            shortest_path = "NO_PATH"
+        features.append("PATH#" + shortest_path)
 
     #print("a6")
     return features
@@ -113,14 +113,14 @@ def find_paths(mrs, ep_1, ep_2, cur_path, count=0):
         if node_id not in seen_ids and count < 10:
             if mrs.ep(node_id).label != ep_1.label and mrs.ep(node_id).iv != ep_1.iv:
                 for arg in in_args[node_id]:
-                    prefix = arg + ":"
+                    prefix = arg + "#"
                     break
                 seen_ids.add(node_id)
                 count += 1
                 paths += find_paths(mrs, ep_1, mrs.ep(node_id), prefix+cur_path, count)
             else:
                 for arg in in_args[node_id]:
-                    prefix = arg + ":"
+                    prefix = arg + "#"
                     break
                 if mrs.ep(node_id).pred.pos:
                     cur_path = mrs.ep(node_id).pred.pos + "," + prefix + cur_path

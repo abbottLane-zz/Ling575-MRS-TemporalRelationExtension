@@ -75,6 +75,7 @@ public class SemanticPathBetweenEventsExtractor<T extends Annotation, U extends 
         //Catch the output of the python script
         try {
             pythonReply = execToString(line);
+
             System.out.println("PYTH: " + pythonReply);
         } catch (IOException e) {
             e.printStackTrace();
@@ -82,11 +83,12 @@ public class SemanticPathBetweenEventsExtractor<T extends Annotation, U extends 
             e.printStackTrace();
         }
 
-        //convert python script output to Feature objects
-        String[] feats = pythonReply.split("\\s+");
-        for(String feature : feats)
-        {
-            features.add(new Feature("semanticFeats", feature));
+        //convert python script output to Feature objects, only if we got back valid features
+        if(pythonReply.startsWith("e1")) {
+            String[] feats = pythonReply.split("\\s+");
+            for (String feature : feats) {
+                features.add(new Feature("semanticFeats", feature));
+            }
         }
         return features;
     }
