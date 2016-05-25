@@ -92,7 +92,7 @@ public class SemanticPathBetweenEventsExtractor<T extends Annotation, U extends 
                     break;
                 }
                 features.add(new Feature(name_val[0], name_val[1]));
-                System.out.println("NAME:" + name_val[0] + " " + "VAL:" + name_val[1] + " ");
+                //System.out.println("NAME:" + name_val[0] + " " + "VAL:" + name_val[1] + " ");
             }
         }
         return features;
