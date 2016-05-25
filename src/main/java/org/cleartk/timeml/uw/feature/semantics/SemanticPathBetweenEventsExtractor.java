@@ -84,10 +84,15 @@ public class SemanticPathBetweenEventsExtractor<T extends Annotation, U extends 
         }
 
         //convert python script output to Feature objects, only if we got back valid features
-        if(pythonReply.startsWith("e1")) {
+        if(pythonReply.startsWith("e1") || pythonReply.startsWith("e2")) {
             String[] feats = pythonReply.split("\\s+");
             for (String feature : feats) {
-                features.add(new Feature("semanticFeats", feature));
+                String[] name_val = feature.split("=");
+                if (name_val[0].contains("/usr/") || name_val[1].contains("/usr/")){
+                    break;
+                }
+                features.add(new Feature(name_val[0], name_val[1]));
+                System.out.println("NAME:" + name_val[0] + " " + "VAL:" + name_val[1] + " ");
             }
         }
         return features;
