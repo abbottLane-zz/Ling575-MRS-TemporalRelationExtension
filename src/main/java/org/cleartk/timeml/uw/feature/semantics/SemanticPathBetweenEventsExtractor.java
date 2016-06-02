@@ -72,8 +72,8 @@ public class SemanticPathBetweenEventsExtractor<T extends Annotation, U extends 
         int e2_end = originalSentence.indexOf(e2)+e2.length();
 
         // in cache-prep mode, write all sentences to a file
-        String cached_sent_filename = "/home/wlane/IdeaProjects/Ling575-MRS-TemporalRelationExtension/src/main/resources/CachedData/cachedSentences.dev.FULL.out";
-        cacheSentences(cached_sent_filename, e1,e1_begin,e1_end,e2,e2_begin,e2_end,originalSentence);
+        //String cached_sent_filename = "/home/wlane/IdeaProjects/Ling575-MRS-TemporalRelationExtension/src/main/resources/CachedData/cachedSentences.dev.FULL.out";
+        //cacheSentences(cached_sent_filename, e1,e1_begin,e1_end,e2,e2_begin,e2_end,originalSentence);
 
         // for current sentence, read in the cached feature set using a key
         StringBuilder key = new StringBuilder();
@@ -85,7 +85,7 @@ public class SemanticPathBetweenEventsExtractor<T extends Annotation, U extends 
         key.append(e2_end);
         String key_str = key.toString();
 
-        String cachedFeatureDictDir = "src/main/resources/CachedData/cachedFeatureDictionary.dev.out";
+        String cachedFeatureDictDir = "src/main/resources/CachedData/cachedFeatureDictionary.DirectPaths.out";
 
 //        // Create python cmd line command
 //        String line = "python3 /home/wlane/IdeaProjects/Ling575-MRS-TemporalRelationExtension/src/main/resources/PythonScripts/feature_extractor.py "+ e1 + " " + e1_begin + " " +e1_end + " " + e2+ " " + e2_begin + " " + e2_end + " \""+ originalSentence + "\"";
@@ -161,7 +161,7 @@ public class SemanticPathBetweenEventsExtractor<T extends Annotation, U extends 
                     break;
                 }
                 features.add(new Feature(name_val[0], name_val[1]));
-                //System.out.println("NAME:" + name_val[0] + " " + "VAL:" + name_val[1] + " ");
+                System.out.println("NAME:" + name_val[0] + " " + "VAL:" + name_val[1] + " ");
             }
         }
         return features;
