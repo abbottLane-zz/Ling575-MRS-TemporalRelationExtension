@@ -26,7 +26,7 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel target="1.8">
-      <module name="relation_extractor" target="1.6" />
+      <module name="relation_extractor" target="1.7" />
     </bytecodeTargetLevel>
   </component>
 </project>
