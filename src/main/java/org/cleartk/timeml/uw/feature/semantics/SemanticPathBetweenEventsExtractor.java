@@ -85,7 +85,7 @@ public class SemanticPathBetweenEventsExtractor<T extends Annotation, U extends 
         key.append(e2_end);
         String key_str = key.toString();
 
-        String cachedFeatureDictDir = "src/main/resources/CachedData/cachedFeatureDictionary.eval.base.out";
+        String cachedFeatureDictDir = "src/main/resources/CachedData/cachedFeatureDictionary.dev.base.out";
 
 //        // Create python cmd line command
 //        String line = "python3 /home/wlane/IdeaProjects/Ling575-MRS-TemporalRelationExtension/src/main/resources/PythonScripts/feature_extractor.py "+ e1 + " " + e1_begin + " " +e1_end + " " + e2+ " " + e2_begin + " " + e2_end + " \""+ originalSentence + "\"";
