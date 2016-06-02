@@ -85,40 +85,10 @@ public class SemanticPathBetweenEventsExtractor<T extends Annotation, U extends 
         key.append(e2_end);
         String key_str = key.toString();
 
-        String cachedFeatureDictDir = "src/main/resources/CachedData/cachedFeatureDictionary.DirectPaths.out";
+        String cachedFeatureDictDir = "src/main/resources/CachedData/cachedFeatureDictionary.clear-seenids.out";
 
-//        // Create python cmd line command
-//        String line = "python3 /home/wlane/IdeaProjects/Ling575-MRS-TemporalRelationExtension/src/main/resources/PythonScripts/feature_extractor.py "+ e1 + " " + e1_begin + " " +e1_end + " " + e2+ " " + e2_begin + " " + e2_end + " \""+ originalSentence + "\"";
-//
-////        line = "/home/wlane/IdeaProjects/relation_extractor/src/main/resources/ace/ace  -g /home/wlane/IdeaProjects/relation_extractor/src/main/resources/ace/erg-1214-x86-64-0.9.22.dat -1Tf \n" + originalSentence+" \n";
-//        System.out.println("JAVA:" + line);
-//        CommandLine cmdLine = CommandLine.parse(line);
-//        String pythonReply = "no response from python script";
-//
-//        //Catch the output of the python script
-//        try {
-//            pythonReply = execToString(line);
-//
-//            System.out.println("PYTH: " + pythonReply);
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//
-//        //convert python script output to Feature objects, only if we got back valid features
-//        if(pythonReply.startsWith("e1") || pythonReply.startsWith("e2")) {
-//            String[] feats = pythonReply.split("\\s+");
-//            for (String feature : feats) {
-//                String[] name_val = feature.split("=");
-//                if (name_val[0].contains("/usr/") || name_val[1].contains("/usr/")){
-//                    break;
-//                }
-//                features.add(new Feature(name_val[0], name_val[1]));
-//                //System.out.println("NAME:" + name_val[0] + " " + "VAL:" + name_val[1] + " ");
-//            }
-//        }
-        return  getFeatureList(key_str, cachedFeatureDictDir);
+        List<Feature> feats = getFeatureList(key_str, cachedFeatureDictDir);
+        return  feats;
     }
 
     private List<Feature> getFeatureList(String key_str, String cachedFeatureDictDir) {
@@ -157,11 +127,10 @@ public class SemanticPathBetweenEventsExtractor<T extends Annotation, U extends 
         for (String feature : feat_toks) {
             if(!feature.equals("NO_PARSE") && !feature.equals("NO_FEATS")) {
                 String[] name_val = feature.split("=");
-                if (name_val[0].contains("/usr/") || name_val[1].contains("/usr/")) {
-                    break;
-                }
                 features.add(new Feature(name_val[0], name_val[1]));
-                System.out.println("NAME:" + name_val[0] + " " + "VAL:" + name_val[1] + " ");
+                //System.out.println("NAME:" + name_val[0] + " " + "VAL:" + name_val[1] + " ");
+            }else{
+                features.add(new Feature("PARSE_FAIL", "NO_PARSE"));
             }
         }
         return features;
@@ -191,19 +160,6 @@ public class SemanticPathBetweenEventsExtractor<T extends Annotation, U extends 
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    public String execToString(String command) throws Exception {
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        CommandLine commandline = CommandLine.parse(command);
-        DefaultExecutor exec = new DefaultExecutor();
-        ExecuteWatchdog watchdog = new ExecuteWatchdog(30*1000);
-        exec.setWatchdog(watchdog);
-        exec.setExitValue(0);
-        PumpStreamHandler streamHandler = new PumpStreamHandler(outputStream);
-        exec.setStreamHandler(streamHandler);
-        exec.execute(commandline);
-        return(outputStream.toString());
     }
     private String getOriginalSentence(List<Tree> toks) throws IOException {
 
