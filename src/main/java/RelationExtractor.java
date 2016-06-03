@@ -12,7 +12,7 @@ public class RelationExtractor {
         String platinum_test_dir = "src/main/resources/te3-platinum"; // For final performance evaluation only
 
         try {
-            String[] evalArgs = {"--train-dirs", timebank_dir, aquaint_dir, "--test-dirs", platinum_test_dir};
+            String[] evalArgs = {"--train-dirs", timebank_dir, aquaint_dir, "--test-dirs",devtest_dir};
             System.out.println("Using: " + devtest_dir + " as dev-test data");
             //TempEval2013Evaluation.main(evalArgs);
 
