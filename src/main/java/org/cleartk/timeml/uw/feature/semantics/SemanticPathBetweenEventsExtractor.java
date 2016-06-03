@@ -85,7 +85,7 @@ public class SemanticPathBetweenEventsExtractor<T extends Annotation, U extends 
         key.append(e2_end);
         String key_str = key.toString();
 
-        String cachedFeatureDictDir = "src/main/resources/CachedData/cachedFeatureDictionary.clear-seenids.out";
+        String cachedFeatureDictDir = "src/main/resources/CachedData/cachedFeatureDictionary.all-long-preds.eval.out";
 
         List<Feature> feats = getFeatureList(key_str, cachedFeatureDictDir);
         return  feats;
