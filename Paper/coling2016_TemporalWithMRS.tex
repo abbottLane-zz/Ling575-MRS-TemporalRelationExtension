@@ -16,14 +16,24 @@
 %%e.agirre@ehu.es or Sergi.Balari@uab.es
 %% and that of ACL 08 by Joakim Nivre and Noah Smith
 
+%\documentclass[11pt]{article}
+%\usepackage{coling2016}
+%\usepackage{times}
+%\usepackage{url}
+%\usepackage{latexsym}
+%\usepackage{float}
+%\usepackage[pdftex]{graphicx}
+%\usepackage{covington}
+
 \documentclass[11pt]{article}
-\usepackage{coling2016}
+\usepackage{/home/wlane/Documents/coling2016}
 \usepackage{times}
 \usepackage{url}
 \usepackage{latexsym}
 \usepackage{float}
 \usepackage[pdftex]{graphicx}
-\usepackage{covington}
+\usepackage{/home/wlane/Documents/covington}
+\usepackage{/home/wlane/Downloads/mrs}
 
 %\setlength\titlebox{5cm}
 
@@ -33,26 +43,26 @@
 % in the camera-ready version and ask you to change it back.
 
 
-\title{Enhancing Temporal Relation Classification with MRS-based Features}
+\title{Enhancing Temporal Relation Classification in English with MRS-based Features}
 
 % For use in final copy
-%\author{Martin Horn \\
-%  Department of Linguistics \\
-%  University of Washington \\
-%  Seattle, WA 98195 \\
-%  {\tt mrtnhorn@uw.edu} \\\And
-%  William Lane \\
-%  Department of Linguistics \\
-%  University of Washington \\
-%  Seattle, WA 98195 \\
-%  {\tt wlane@uw.edu} \\}
+\author{Martin Horn \\
+  Department of Linguistics \\
+  University of Washington \\
+  Seattle, WA 98195 \\
+  {\tt mrtnhorn@uw.edu} \\\And
+  William Lane \\
+  Department of Linguistics \\
+  University of Washington \\
+  Seattle, WA 98195 \\
+  {\tt wlane@uw.edu} \\}
 
 \date{}
 
 \begin{document}
 \maketitle
 \begin{abstract}
-This project explores the use of semantic features in improving a system which extracts and relates temporal expressions and events in general domain text. We use a top-performing system which participated in TempEval-3 as a baseline and add features derived from Minimal Recursion Semantics (MRS) representations derived from parsing the shared task data. Specifically, we focus on the component of the system which classifies the relation between two intra-sentential events. We have found that incorporating the MRS into the existing feature set improves F1 score by 2.5\% using official shared task test data and evaluation metric.
+This project explores the use of semantic features in improving a system which extracts and relates temporal expressions and events in general domain text. We use a top-performing system which participated in TempEval-3 as a baseline and add features derived from Minimal Recursion Semantics (MRS) representations derived from parsing the shared task data. Specifically, we focus on the component of the system which classifies the relation between two intra-sentential events. We have found that incorporating the MRS into the existing feature set improves F1 score by 2.5\% (relative) using official shared task test data and evaluation metric.
 \end{abstract}
 
 \section{Introduction}
@@ -90,11 +100,11 @@ This project explores the use of semantic features in improving a system which e
     % \url{http://creativecommons.org/licenses/by/4.0/}
 }
 
-Identifying and relating temporal expressions in free text remains a difficult and typically low-performing task in NLP. There are many reasons for this: temporal expressions vary widely in form, they are difficult to normalize, and classifying their relation to each other requires context. However, the ability to perform these tasks is very useful for a variety of domains. For example, in the clinical domain, interpreting temporal information in clinical notes can give valuable insight into patient symptoms, diagnoses, and treatments.
+Identifying and relating temporal expressions in free text remains a difficult task in NLP. There are many reasons for this: temporal expressions vary widely in form, they are difficult to normalize, and classifying their relation to each other requires context. However, the ability to perform these tasks is very useful for a variety of domains. For example, in the clinical domain, interpreting temporal information in clinical notes can give valuable insight into patient symptoms, diagnoses, and treatments.
 
-This task is so difficult yet important that an entire temporal shared task has emerged within the umbrella of SemEval. In this paper, we work on the TempEval-3 task from 2013, which focuses on ``the automatic identification of temporal expressions (timexes), events, and temporal relations within a text" \cite{UzZaman:13}.
+This task is so difficult yet important that an entire temporal shared task has emerged under the umbrella of SemEval. In this paper, we work on the TempEval-3 task from 2013, which focuses on automatically identifying temporal expressions, events, and temporal relations in text \cite{UzZaman:13}.
 
-Existing solutions to this task have typically been either rule-based systems or machine learning systems which incorporate n-gram and/or paths from syntactic constituency or dependency trees. We experiment using features derived from semantic representations in order to improve temporal relation classification, which is inherently a semantic task. We use Minimal Recursion Semantics (MRS) analyses \cite{Copestake:05}, from which we derive features to be added to a baseline system which uses an SVM classifier. To our knowledge, this is the first time that features derived from MRS analyses have been used in a temporal information extraction task.
+Existing solutions to this task have typically been either rule-based systems or machine learning systems which incorporate n-gram and/or paths from syntactic constituency or dependency trees. We experiment using features derived from semantic representations in order to improve temporal relation classification, which is inherently a semantic task. We use English Resource Semantic (ERS) representations produced by the English Resource Grammar (Flickinger, 2000, 2011) which are based on the Minimal Recursion Semantics (MRS) formalism \cite{Copestake:05}, from which we derive features to be added to a baseline system which uses an SVM classifier. To our knowledge, this is the first time that features derived from MRS analyses have been used in a temporal information extraction task.
 
 We have found that adding these semantic features to an existing baseline feature set of n-grams, syntactic paths, and morphosyntactic properties increases F1 score by as much as 2.5\% and recall by as much as 4\%. In Section \ref{related-work}, we cover some related work in deriving MRS features, the target task we are approaching, and the baseline system we build upon. We outline our main approach in Section \ref{methodology}, provide our evaluation metric and results in Section \ref{eval}, and finally discuss our results and perform error analysis in Section \ref{discussion}.
 
@@ -104,11 +114,11 @@ We have found that adding these semantic features to an existing baseline featur
 
 %\subsection{Background}
 
-MRS has been used in a variety of NLP tasks. \newcite{Packard:14} crawl MRS analyses in order to perform a rule-based approach to negation scope resolution. \newcite{Kramer:14} use similar crawling techniques in order to design features for use in a Naive Bayes-based sentiment classification system. In this work, we look at expanding this use of MRS crawling to a new domain where semantic dependency paths are very relevant.
+MRS has been used in a variety of NLP tasks. \newcite{Packard:14} crawl MRS analyses in order to perform a rule-based approach to negation scope resolution. \newcite{Kramer:14} use similar techniques to extract salient relations between semantic predicates in the ERS for use as features in a Naive Bayes-based sentiment classification system. In this work, we look at expanding this use of ERS-based features to a new domain where semantic dependency paths are very relevant.
 
 \subsection{Target Task}
 
-The target task that we are approaching is the Task C component of TempEval-3 \cite{UzZaman:13}. Task C involves identifying and classifying pairs of entities with a temporal link (TLINK). Entities can be either events or timexes (time expressions), and the set of TLINK values are \{BEFORE, AFTER, INCLUDES, IS-INCLUDED, DURING, SIMULTANEOUS, IMMEDIATELY AFTER, IMMEDIATELY BEFORE, IDENTITY, BEGINS, ENDS, BEGUN-BY, ENDED-BY\}. However, the creator of our baseline system restricts the system classifier relations to \{BEFORE, AFTER\}, most likely due to sparsity in the other relations \cite{Bethard:13}.
+The target task that we are approaching is the Task C component of TempEval-3 \cite{UzZaman:13}. Task C involves identifying and classifying pairs of entities with a temporal link (TLINK). A TLINK is the label placed on the relationship binding two entities. For example, if EntityA occured \textit{before} EntityB, then the TLINK that binds them is the label corresponding with \textit{before}. Entities can be either events or timexes (time expressions), and the set of possible TLINK values are \{BEFORE, AFTER, INCLUDES, IS-INCLUDED, DURING, SIMULTANEOUS, IMMEDIATELY AFTER, IMMEDIATELY BEFORE, IDENTITY, BEGINS, ENDS, BEGUN-BY, ENDED-BY\}. However, the creator of our baseline system restricts the system classifier relations to \{BEFORE, AFTER\}, most likely due to sparsity in the other relations \cite{Bethard:13}.
 
 Teams that wished to only complete Task C could either identify the pairs of entities that have a TLINK and classify those TLINKS (given the the gold entities, but not which entities were related) or just classify the TLINKS (given the gold entities as well as the related pairs) \cite{UzZaman:13}. Our baseline both identifies and classifies the TLINKS, but we will be working on the classification component. Specifically, we are adding features to the component that classifies relations between two events in the same sentence.
 
@@ -116,9 +126,14 @@ Teams that wished to only complete Task C could either identify the pairs of ent
 
 The baseline system that we are using is called ClearTK-TimeML. It was the best performing system (by F1 score) in the TempEval-3 end-to-end temporal relation extraction task (Task ABC). ClearTK is a machine learning and NLP framework for information extraction developed by the University of Colorado's Center for Computational Language and Education Research group. The Time-ML module was developed by Steven Bethard, now at the University of Alabama \cite{Bethard:14}.
 
-Though the system performs temporal entity extraction in addition to relation identification/classification, the focus here will be on the relation component since that is the most intuitively relevant for MRS incorporation. An example of the gold standard annotation for a sentence from the training data can be found in the Appendix. This annotation includes a marked up version of the sentence with temporal expression and event entities extracted, the instances created for two of the events, and two example TLINKs.
+Though the system performs temporal entity extraction in addition to relation identification/classification, the focus here will be on the relation component since that is the most intuitively relevant for MRS incorporation.  Specifically, we decided to focus
+our efforts on the event-to-event classification
+model, with the intuition that there exists more
+diverse and interesting semantic information between
+two event pairs rather than between event
+and timestamp pairs. 
 
-In the [Event] to [Event] model, only pairs whose syntactic path from one event to the other matched the following regex of syntactic categories and up/down movements were considered:
+In Bethard's the event-to-event model, only pairs whose syntactic path from one event to the other matched the following regex of syntactic categories and up/down movements were considered:
 
 \begin{itemize}
 
@@ -137,11 +152,11 @@ The domain of labels was \{BEFORE, AFTER\}, and the features used were \cite{Bet
 \item The tokens between the two events.
 \end{itemize}
 
-In our approach, we also incorporate property and n-gram-like features; however, our main contribution is the use of semantic dependency paths, which can capture more direct and relevant relationships between events than paths through a constituency tree.
+%In our approach, we retain all of Bethard's original features. Additionally, our approach reenforces some of Bethard's features by using the ERG's own version of aspect and tense for each event. However, our main contribution is the addition of semantic dependency paths which can capture more direct and relevant relationships between events than paths through a constituency tree.
+%
+The data for this shared task includes three separate corpora. The gold label data consisted of two corpora: the human-annotated data from TimeBank (61,418 words) and AQUAINT (33,973 words). An additional ``silver" corpus was provided for additional training. This third corpus was created automatically on the Gigaword corpus (666,309 words) by merging three state-of-the-art systems from previous shared tasks \cite{UzZaman:13}.
 
-The data for this shared task includes three separate corpora. The normal gold corpus consists of human-annotated data from TimeBank (61,418 words) and AQUAINT (33,973 words). An additional ``silver" corpus was provided for additional training. This corpus was created automatically on the Gigaword corpus (666,309 words) by merging three state-of-the-art systems from previous shared tasks \cite{UzZaman:13}.
-
-Bethard tested a few different machine learning classifiers but used LIBLINEAR SVM and logistic regression for all of the final models. The data used to train the models came from the task-provided TimeBank, AQUAINT, and silver annotated corpora, as well as a corpus of verb-clause temporal relation annotations from \newcite{Bethard:07} and closure-inferred temporal relations from \newcite{Muller:13}. The best performing models used TimeBank and Bethard's own corpus. We did not have access to Bethard's own corpus, so we trained on TimeBank and AQUAINT.
+Bethard tested a few different machine learning classifiers but used LIBLINEAR SVM and logistic regression for all of the final models. The data used to train the models came from the task-provided TimeBank, AQUAINT, and silver annotated corpora, as well as a corpus of verb-clause temporal relation annotations from \newcite{Bethard:07} and closure-inferred temporal relations from \newcite{Muller:13}. The best performing models used TimeBank and Bethard's own corpus. We did not have access to Bethard's own corpus, so we trained on TimeBank and AQUAINT, and compared our results to those reported by Bethard which corresponded to that training set.
 
 %\begin{figure*}[t]
 %{\small \texttt{[ LTOP: h0 INDEX: e2 [ e SF: prop TENSE: pres MOOD: indicative PROG: - PERF: - ] RELS: \textless [ focus\_d\textless0:60\textgreater LBL: h1 ARG0: e4 [ e SF: prop TENSE: untensed MOOD: indicative PROG: - PERF: - ] ARG1: e2 ARG2: i5 ]  [ \_public\_a\_1\textless0:9\textgreater LBL: h1 ARG0: e6 [ e SF: prop TENSE: untensed MOOD: indicative PROG: - PERF: - ] ARG1: e2 ]  [ pron\textless10:14\textgreater LBL: h7 ARG0: x3 [ x PERS: 3 NUM: pl PT: std ] ]  [ pronoun\_q\textless10:14\textgreater LBL: h8 ARG0: x3 RSTR: h9 BODY: h10 ]  [ \textbf{\_unwilling\_a\_1}\textless19:28\textgreater LBL: h1 ARG0: e2 ARG1: x3 ARG2: h11 ]  [ \textbf{\_make\_v\_1}\textless32:36\textgreater LBL: h12 ARG0: e13 [ e SF: prop-or-ques TENSE: untensed MOOD: indicative PROG: - PERF: - ] ARG1: x3 ARG2: x14 [ x PERS: 3 NUM: sg ] ARG3: u15 ]  [ \_any\_q\textless37:40\textgreater LBL: h16 ARG0: x14 RSTR: h17 BODY: h18 ]  [ compound\textless41:60\textgreater LBL: h19 ARG0: e20 [ e SF: prop TENSE: untensed MOOD: indicative PROG: - PERF: - ] ARG1: x14 ARG2: x21 [ x PERS: 3 NUM: sg GEND: n ] ]  [ udef\_q\textless41:49\textgreater LBL: h22 ARG0: x21 RSTR: h23 BODY: h24 ]  [ \_sweep\_v\_1\textless41:49\textgreater LBL: h25 ARG0: e26 [ e SF: prop TENSE: untensed MOOD: indicative PROG: + PERF: - ] ARG1: i27 ARG2: p28 ]  [ nominalization\textless41:49\textgreater LBL: h29 ARG0: x21 ARG1: h25 ]  [ \_assertion\_n\_of\textless50:60\textgreater LBL: h19 ARG0: x14 ARG1: i30 ] \textgreater HCONS: \textless h0 qeq h1 h9 qeq h7 h11 qeq h12 h17 qeq h19 h23 qeq h29 \textgreater ]}}
@@ -150,6 +165,7 @@ Bethard tested a few different machine learning classifiers but used LIBLINEAR S
 
 \begin{figure*}[t]
 {\small \texttt{[ LTOP: h0 INDEX: e2 [ e SF: prop TENSE: past MOOD: indicative PROG: - PERF: - ] RELS: \textless [ pron\textless0:4\textgreater LBL: h4 ARG0: x3 [ x PERS: 3 NUM: pl PT: std ] ]  [ pronoun\_q\textless0:4\textgreater LBL: h5 ARG0: x3 RSTR: h6 BODY: h7 ]  [ \_yell\_v\_1\textless5:11\textgreater LBL: h8 ARG0: e9 [ e SF: prop TENSE: past MOOD: indicative PROG: - PERF: - ] ARG1: x3 ARG2: p10 ]  [ \_and\_c\textless12:15\textgreater LBL: h1 ARG0: e2 L-INDEX: e9 R-INDEX: e11 [ e SF: prop TENSE: past MOOD: indicative PROG: - PERF: - ] L-HNDL: h8 R-HNDL: h12 ]  [ \_weep\_v\_1\textless16:20\textgreater LBL: h13 ARG0: e11 ARG1: x3 ARG2: p14 ]  [ \_when\_x\_subord\textless21:25\textgreater LBL: h12 ARG0: e15 [ e SF: prop TENSE: untensed MOOD: indicative PROG: - PERF: - ] ARG1: h16 ARG2: h17 ]  [ \_the\_q\textless26:29\textgreater LBL: h18 ARG0: x19 [ x PERS: 3 NUM: sg ] RSTR: h20 BODY: h21 ]  [ \textbf{\_decision\_n\_1}\textless30:38\textgreater LBL: h22 ARG0: x19 ]  [ \textbf{\_announce\_v\_to}\textless43:53\textgreater LBL: h23 ARG0: e24 [ e SF: prop TENSE: past MOOD: indicative PROG: - PERF: - ] ARG1: i25 ARG2: x19 ARG3: i26 ]  [ parg\_d\textless43:53\textgreater LBL: h23 ARG0: e27 [ e SF: prop TENSE: untensed MOOD: indicative PROG: - PERF: - ] ARG1: e24 ARG2: x19 ] \textgreater HCONS: \textless h0 qeq h1 h6 qeq h4 h16 qeq h13 h17 qeq h23 h20 qeq h22 \textgreater ]}}
+   
 \caption{MRS Analysis for \emph{They yelled and wept when the [decision] was [announced].} \label{mrs}}
 \end{figure*}
 
@@ -176,7 +192,7 @@ Once we have an MRS analysis for a given sentence, we connect the two given even
 
 The EPs each have a predicate symbol, such as \texttt{\_announce\_v\_to} in Figure \ref{mrs}, one component of which is a lemma, (in this case, \textit{announce}). For each event, we add its corresponding EP's lemma name, such as \texttt{e1LEMMA=decision} and \texttt{e2LEMMA=announce} for the events in Figure \ref{mrs}. These normalized lemmas may be useful as features because they add a level of abstraction from the surface string. Morphological variation in words can lead to data sparsity, so using lemmas may capture broader patterns.\footnote{By using just the lemma, we lose the word sense distinctions that the ERG makes, usually indicated by a number at the end of the predicate symbol.}
 
-For each event, we also include the properties of the associated EP. For example, for the events in Figure \ref{mrs}, we create the following feature set:
+For each event, we also include the variable properties of the associated EP. For example, for the events in Figure \ref{mrs}, we create the following feature set:
 
 \begin{itemize}
 \setlength\itemsep{-0.5em}
