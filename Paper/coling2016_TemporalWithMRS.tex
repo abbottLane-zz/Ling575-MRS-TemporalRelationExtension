@@ -34,6 +34,7 @@
 \usepackage[pdftex]{graphicx}
 \usepackage{/home/wlane/Documents/covington}
 \usepackage{/home/wlane/Downloads/mrs}
+\usepackage{relsize}
 
 %\setlength\titlebox{5cm}
 
@@ -163,10 +164,37 @@ Bethard tested a few different machine learning classifiers but used LIBLINEAR S
 %\caption{MRS Analysis for \emph{Publicly, they are \textbf{unwilling} to \textbf{make} any sweeping assertion.} \label{mrs}}
 %\end{figure*}
 
-\begin{figure*}[t]
-{\small \texttt{[ LTOP: h0 INDEX: e2 [ e SF: prop TENSE: past MOOD: indicative PROG: - PERF: - ] RELS: \textless [ pron\textless0:4\textgreater LBL: h4 ARG0: x3 [ x PERS: 3 NUM: pl PT: std ] ]  [ pronoun\_q\textless0:4\textgreater LBL: h5 ARG0: x3 RSTR: h6 BODY: h7 ]  [ \_yell\_v\_1\textless5:11\textgreater LBL: h8 ARG0: e9 [ e SF: prop TENSE: past MOOD: indicative PROG: - PERF: - ] ARG1: x3 ARG2: p10 ]  [ \_and\_c\textless12:15\textgreater LBL: h1 ARG0: e2 L-INDEX: e9 R-INDEX: e11 [ e SF: prop TENSE: past MOOD: indicative PROG: - PERF: - ] L-HNDL: h8 R-HNDL: h12 ]  [ \_weep\_v\_1\textless16:20\textgreater LBL: h13 ARG0: e11 ARG1: x3 ARG2: p14 ]  [ \_when\_x\_subord\textless21:25\textgreater LBL: h12 ARG0: e15 [ e SF: prop TENSE: untensed MOOD: indicative PROG: - PERF: - ] ARG1: h16 ARG2: h17 ]  [ \_the\_q\textless26:29\textgreater LBL: h18 ARG0: x19 [ x PERS: 3 NUM: sg ] RSTR: h20 BODY: h21 ]  [ \textbf{\_decision\_n\_1}\textless30:38\textgreater LBL: h22 ARG0: x19 ]  [ \textbf{\_announce\_v\_to}\textless43:53\textgreater LBL: h23 ARG0: e24 [ e SF: prop TENSE: past MOOD: indicative PROG: - PERF: - ] ARG1: i25 ARG2: x19 ARG3: i26 ]  [ parg\_d\textless43:53\textgreater LBL: h23 ARG0: e27 [ e SF: prop TENSE: untensed MOOD: indicative PROG: - PERF: - ] ARG1: e24 ARG2: x19 ] \textgreater HCONS: \textless h0 qeq h1 h6 qeq h4 h16 qeq h13 h17 qeq h23 h20 qeq h22 \textgreater ]}}
-   
-\caption{MRS Analysis for \emph{They yelled and wept when the [decision] was [announced].} \label{mrs}}
+\begin{figure*}[width=\textwidth,keepaspectratio, ]
+%{\small \texttt{[ LTOP: h0 INDEX: e2 [ e SF: prop TENSE: past MOOD: indicative PROG: - PERF: - ] RELS: \textless [ pron\textless0:4\textgreater LBL: h4 ARG0: x3 [ x PERS: 3 NUM: pl PT: std ] ]  [ pronoun\_q\textless0:4\textgreater LBL: h5 ARG0: x3 RSTR: h6 BODY: h7 ]  [ \_yell\_v\_1\textless5:11\textgreater LBL: h8 ARG0: e9 [ e SF: prop TENSE: past MOOD: indicative PROG: - PERF: - ] ARG1: x3 ARG2: p10 ]  [ \_and\_c\textless12:15\textgreater LBL: h1 ARG0: e2 L-INDEX: e9 R-INDEX: e11 [ e SF: prop TENSE: past MOOD: indicative PROG: - PERF: - ] L-HNDL: h8 R-HNDL: h12 ]  [ \_weep\_v\_1\textless16:20\textgreater LBL: h13 ARG0: e11 ARG1: x3 ARG2: p14 ]  [ \_when\_x\_subord\textless21:25\textgreater LBL: h12 ARG0: e15 [ e SF: prop TENSE: untensed MOOD: indicative PROG: - PERF: - ] ARG1: h16 ARG2: h17 ]  [ \_the\_q\textless26:29\textgreater LBL: h18 ARG0: x19 [ x PERS: 3 NUM: sg ] RSTR: h20 BODY: h21 ]  [ \textbf{\_decision\_n\_1}\textless30:38\textgreater LBL: h22 ARG0: x19 ]  [ \textbf{\_announce\_v\_to}\textless43:53\textgreater LBL: h23 ARG0: e24 [ e SF: prop TENSE: past MOOD: indicative PROG: - PERF: - ] ARG1: i25 ARG2: x19 ARG3: i26 ]  [ parg\_d\textless43:53\textgreater LBL: h23 ARG0: e27 [ e SF: prop TENSE: untensed MOOD: indicative PROG: - PERF: - ] ARG1: e24 ARG2: x19 ] \textgreater HCONS: \textless h0 qeq h1 h6 qeq h4 h16 qeq h13 h17 qeq h23 h20 qeq h22 \textgreater ]}}
+\siblock{\sh{1}}{\svar{e}{3}{}}{%
+  \sep{\sh{4}}{\spred{\_the\_q\slnkc{0}{3}}}{%
+    \srole{ARG0}{\svar{x}{6}{\svp{PERS}{3}, \svp{NUM}{sg}, \svp{GEND}{n}}},
+    \srole{RSTR}{\svar{h}{7}{}},
+    \srole{BODY}{\svar{h}{5}{}}},\\
+  \sep{\sh{8}}{\spred{\_yell\_v\_1\slnkc{4}{11}}}{%
+    \srole{ARG0}{\svar{e}{9}{\svp{SF}{prop}, \svp{TENSE}{untensed}, \svp{MOOD}{indicative}, \svp{PROG}{+}, \svp{PERF}{-}}},
+    \srole{ARG1}{\svar{i}{11}{}},
+    \srole{ARG2}{\svar{p}{10}{}}},\\
+  \sep{\sh{12}}{\spred{nominalization\slnkc{4}{11}}}{%
+    \srole{ARG0}{\svar{x}{6}{}},
+    \srole{ARG1}{\svar{h}{8}{}}},\\
+  \sep{\sh{2}}{\spred{\_confuse\_v\_1\slnkc{12}{20}}}{%
+    \srole{ARG0}{\svar{e}{3}{\svp{SF}{prop}, \svp{TENSE}{past}, \svp{MOOD}{indicative}, \svp{PROG}{-}, \svp{PERF}{-}}},
+    \srole{ARG1}{\svar{x}{6}{}},
+    \srole{ARG2}{\svar{x}{13}{\svp{PERS}{3}, \svp{NUM}{sg}, \svp{IND}{+}}}},\\
+  \sep{\sh{14}}{\spred{proper\_q\slnkc{21}{32}}}{%
+    \srole{ARG0}{\svar{x}{13}{}},
+    \srole{RSTR}{\svar{h}{15}{}},
+    \srole{BODY}{\svar{h}{16}{}}},\\
+  \sep{\sh{17}}{\spred{\_poor\_a\_1\slnkc{21}{25}}}{%
+    \srole{ARG0}{\svar{e}{18}{\svp{SF}{prop}, \svp{TENSE}{untensed}, \svp{MOOD}{indicative}, \svp{PROG}{-}, \svp{PERF}{-}}},
+    \srole{ARG1}{\svar{x}{13}{}}},\\
+  \sep{\sh{17}}{\spred{named\slnkc{26}{32}}}{%
+    \srole{ARG0}{\svar{x}{13}{}},
+    \srole{CARG}{\sconst{Harold}}}}
+  {\sqeq{15}{17}, \sqeq{7}{12}, \sqeq{1}{2}}
+
+\caption{MRS Analysis for \emph{The [yelling]$^{Event1}$ [confused]$^{Event2}$ poor Harold} \label{mrs}}
 \end{figure*}
 
 \section{Methodology}
