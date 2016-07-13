@@ -24,6 +24,7 @@
 \usepackage{float}
 \usepackage[pdftex]{graphicx}
 \usepackage{covington}
+\usepackage{enumitem}
 \usepackage{relsize}
 \usepackage{mrs}
 
@@ -106,7 +107,7 @@ Identifying and relating temporal expressions in free text remains a difficult t
 
 This task is so difficult yet important that an entire temporal shared task has emerged under the umbrella of SemEval. In this paper, we work on the TempEval-3 task from 2013, which focuses on automatically identifying temporal expressions, events, and temporal relations in text \cite{UzZaman:13}.
 
-Existing solutions to this task have typically been either rule-based systems or machine learning systems which incorporate n-gram and/or paths from syntactic constituency or dependency trees. We experiment using features derived from semantic representations in order to improve temporal relation classification, which is inherently a semantic task. We use English Resource Semantic (ERS) representations produced by the English Resource Grammar (Flickinger, 2000, 2011) which are based on the Minimal Recursion Semantics (MRS) formalism \cite{Copestake:05}, from which we derive features to be added to a baseline system which uses an SVM classifier. To our knowledge, this is the first time that features derived from MRS analyses have been used in a temporal information extraction task.
+Existing solutions to this task have typically been either rule-based systems or machine learning systems which incorporate n-gram and/or paths from syntactic constituency or dependency trees. We experiment using features derived from semantic representations in order to improve temporal relation classification, which is inherently a semantic task. We use English Resource Semantics (ERS) representations produced by the English Resource Grammar \cite{Flickinger:00} which are based on the Minimal Recursion Semantics (MRS) formalism \cite{Copestake:05}, from which we derive features to be added to a baseline system which uses an SVM classifier. To our knowledge, this is the first time that features derived from MRS analyses have been used in a temporal information extraction task.
 
 We have found that adding these semantic features to an existing baseline feature set of n-grams, syntactic paths, and morphosyntactic properties increases F1 score by as much as 2.5\% and recall by as much as 4\%. In Section \ref{related-work}, we cover some related work in deriving MRS features, the target task we are approaching, and the baseline system we build upon. We outline our main approach in Section \ref{methodology}, provide our evaluation metric and results in Section \ref{eval}, and finally discuss our results and perform error analysis in Section \ref{discussion}.
 
@@ -120,24 +121,19 @@ MRS has been used in a variety of NLP tasks. \newcite{Packard:14} crawl MRS anal
 
 \subsection{Target Task}
 
-The target task that we are approaching is the Task C component of TempEval-3 \cite{UzZaman:13}. Task C involves identifying and classifying pairs of entities with a temporal link (TLINK). A TLINK is the label placed on the relationship binding two entities. For example, if EntityA occured \textit{before} EntityB, then the TLINK that binds them is the label corresponding with \textit{before}. Entities can be either events or timexes (time expressions), and the set of possible TLINK values are \{BEFORE, AFTER, INCLUDES, IS-INCLUDED, DURING, SIMULTANEOUS, IMMEDIATELY AFTER, IMMEDIATELY BEFORE, IDENTITY, BEGINS, ENDS, BEGUN-BY, ENDED-BY\}. However, the creator of our baseline system restricts the system classifier relations to \{BEFORE, AFTER\}, most likely due to sparsity in the other relations \cite{Bethard:13}.
+The target task that we are approaching is the Task C component of TempEval-3 \cite{UzZaman:13}. Task C involves identifying and classifying pairs of entities with a temporal link (TLINK). A TLINK is the label placed on the relationship binding two entities. For example, if Entity A occured \textit{before} Entity B, then the TLINK that binds them is the label corresponding to \textit{before}. Entities can be either events or timexes (time expressions), and the set of possible TLINK values are \{BEFORE, AFTER, INCLUDES, IS-INCLUDED, DURING, SIMULTANEOUS, IMMEDIATELY AFTER, IMMEDIATELY BEFORE, IDENTITY, BEGINS, ENDS, BEGUN-BY, ENDED-BY\}. However, the creator of our baseline system restricts the system classifier relations to \{BEFORE, AFTER\}, most likely due to sparsity in the other relations \cite{Bethard:13}.
 
-Teams that wished to only complete Task C could either identify the pairs of entities that have a TLINK and classify those TLINKS (given the the gold entities, but not which entities were related) or just classify the TLINKS (given the gold entities as well as the related pairs) \cite{UzZaman:13}. Our baseline both identifies and classifies the TLINKS, but we will be working on the classification component. Specifically, we are adding features to the component that classifies relations between two events in the same sentence.
+Teams that wished to only complete Task C could either identify the pairs of entities that have a TLINK and classify those TLINKS (given the the gold entities, but not which entities were related) or just classify the TLINKS (given the gold entities as well as the related pairs) \cite{UzZaman:13}. The baseline we use both identifies and classifies the TLINKS, but our work focuses on the classification component. Specifically, we add features to the component that classifies relations between two events in the same sentence.
 
 \subsection{Baseline System}
 
 The baseline system that we are using is called ClearTK-TimeML. It was the best performing system (by F1 score) in the TempEval-3 end-to-end temporal relation extraction task (Task ABC). ClearTK is a machine learning and NLP framework for information extraction developed by the University of Colorado's Center for Computational Language and Education Research group. The Time-ML module was developed by Steven Bethard, now at the University of Alabama \cite{Bethard:14}.
 
-Though the system performs temporal entity extraction in addition to relation identification/classification, the focus here will be on the relation component since that is the most intuitively relevant for MRS incorporation.  Specifically, we decided to focus
-our efforts on the event-to-event classification
-model, with the intuition that there exists more
-diverse and interesting semantic information between
-two event pairs rather than between event
-and timestamp pairs. 
+Though the system performs temporal entity extraction in addition to relation identification/classification, the focus here will be on the relation component since that is the most intuitively relevant for MRS incorporation. Specifically, we decided to focus our efforts on the event-to-event classification model, with the intuition that there exists more diverse and interesting semantic information between two event pairs rather than between event and timestamp pairs.
 
-In Bethard's the event-to-event model, only pairs whose syntactic path from one event to the other matched the following regex of syntactic categories and up/down movements were considered:
+In Bethard's event-to-event model, only pairs whose syntactic path from one event to the other matched the following regex of syntactic categories and up/down movements were considered:
 
-\begin{itemize}
+\begin{itemize}[labelindent=2em, labelsep*=2em, leftmargin=!]
 
 \item[(\exampleno)] \label{syntax_regex}
 
@@ -156,7 +152,7 @@ The domain of labels was \{BEFORE, AFTER\}, and the features used were \cite{Bet
 
 %In our approach, we retain all of Bethard's original features. Additionally, our approach reenforces some of Bethard's features by using the ERG's own version of aspect and tense for each event. However, our main contribution is the addition of semantic dependency paths which can capture more direct and relevant relationships between events than paths through a constituency tree.
 %
-The data for this shared task includes three separate corpora. The gold label data consisted of two corpora: the human-annotated data from TimeBank (61,418 words) and AQUAINT (33,973 words). An additional ``silver" corpus was provided for additional training. This third corpus was created automatically on the Gigaword corpus (666,309 words) by merging three state-of-the-art systems from previous shared tasks \cite{UzZaman:13}.
+The data for this shared task included three separate corpora. The gold label data consisted of human-annotated data from TimeBank (61,418 words) and AQUAINT (33,973 words). An additional ``silver" corpus was provided for additional training. This corpus was created automatically on the Gigaword corpus (666,309 words) by merging three state-of-the-art systems from previous shared tasks. Finally, testing was done on a smaller ``platinum" corpus of 6,375 words, annotated by the task organizers and with an F1 score inter-annotator agreement rate of at least 87\% in all categories \cite{UzZaman:13}.
 
 Bethard tested a few different machine learning classifiers but used LIBLINEAR SVM and logistic regression for all of the final models. The data used to train the models came from the task-provided TimeBank, AQUAINT, and silver annotated corpora, as well as a corpus of verb-clause temporal relation annotations from \newcite{Bethard:07} and closure-inferred temporal relations from \newcite{Muller:13}. The best performing models used TimeBank and Bethard's own corpus. We did not have access to Bethard's own corpus, so we trained on TimeBank and AQUAINT, and compared our results to those reported by Bethard which corresponded to that training set.
 
@@ -290,17 +286,15 @@ Some of these properties, especially the verb properties, can be useful cues for
 
 Beyond using static labels explicitly stated in the MRS representation, MRS can also be traversed by using the analysis as a semantic dependency graph. Each EP has a set of arguments which connect the EP to other EPs. We hope to capture semantic relationships by finding a path from one event to another in a sentence. We follow \newcite{Packard:14}'s approach of functor crawling for our \emph{full path} feature and argument crawling for our \emph{direct path} feature.
 
-First, we find the shortest path between the two event EPs, starting at the second-occurring event in the sentence and functor crawling back until we reach the first event. The idea here is that we want to capture semantic relations between events, rather than just a syntactic path as is used in the baseline system. We include the event number as well as part of speech and argument number for each node in the path. For example, the feature for the path between e1 (\emph{unwilling}) and e2 (\emph{make}) in (\ref{sent2}) is \texttt{PATH=e1\#a,ARG2\#e2\#v}.\\\\
-(\exampleno)\label{sent2} \emph{Publicly, they are [unwilling] to [make] any sweeping assertion.}\\\\
+First, we find the shortest path between the two event EPs, starting at the second-occurring event in the sentence and functor crawling back until we reach the first event. The idea here is that we want to capture semantic relations between events, rather than just a syntactic path as is used in the baseline system. We include the event number as well as part of speech and argument number for each node in the path. For example, the feature for the path between e1 (\emph{unwilling}) and e2 (\emph{make}) in (\ref{sent2}) is \texttt{PATH=e1\#a,ARG2\#e2\#v}.
+\begin{itemize}[labelindent=2em, labelsep*=2em, leftmargin=!]
+\item[(\exampleno)]\label{sent2} \emph{Publicly, they are [unwilling] to [make] any sweeping assertion.}
+\end{itemize}
 The MRS in Figure \ref{mrs} returns the feature \texttt{PATH=NO\_PATH} because the events are not connected through functor crawling.
 
 We also use argument crawling to find situations in which one event is in the argument set of the other event. These provide us with ``direct" paths between the two events. It is possible for this feature to look very similar to the PATH feature above. This is the case in (\ref{sent2}), for which our direct path feature is \texttt{DIRECT=e1\#a[ARG2\#e2\#v]}.
 
-However, in cases like the sentence in Figure \ref{mrs}, where no functor path is found, the argument-crawled path comes in handy:\\
-
-\texttt{DIRECT=e2\#v[\#ARG2\#e1\#n]}.\\
-
-Here, the MRS captures the passive nature of the verb \emph{announced} and the fact that \emph{decision} is its argument rather than vice versa (as the order in the sentence might falsely indicate just looking at n-grams). If this happens enough, the machine learning system may pick up the pattern that a noun which occurs as the ARG2 of a verb tends to happen before the verb. This is the case for the noun \emph{decision} in relation to the verb \emph{announced} in Figure \ref{mrs}.
+However, in cases like the sentence in Figure \ref{mrs}, where no functor path is found, the argument-crawled path comes in handy: \texttt{DIRECT=e2\#v[\#ARG2\#e1\#n]}. Here, the MRS captures the passive nature of the verb \emph{announced} and the fact that \emph{decision} is its argument rather than vice versa (as the order in the sentence might falsely indicate just looking at n-grams). If this happens enough, the machine learning system may pick up the pattern that a noun which occurs as the ARG2 of a verb tends to happen before the verb. This is the case for the noun \emph{decision} in relation to the verb \emph{announced} in Figure \ref{mrs}.
 
 \subsection{Incorporating Features into Baseline}
 
@@ -522,26 +516,26 @@ Naushad UzZaman, Hector Llorens, Leon Derczynski, Marc Verhagen, James Allen, an
 
 \end{thebibliography}
 
-\onecolumn
-\section*{Appendix}
-
-\subsection*{Original sentence}
-In Washington today, the Federal Aviation Administration released air traffic control tapes from the night the TWA Flight eight hundred went down.\\
-
-\subsection*{Sentence with TIMEX and EVENT entities extracted}
-In Washington {\textless}TIMEX3 tid=``t53" type=``DATE" value=``1998-01-14" temporalFunction=``true" functionInDocument=``NONE" anchorTimeID=``t0"{\textgreater}\textbf{today}{\textless}/TIMEX3{\textgreater}, the Federal Aviation Administration {\textless}EVENT eid=``e1" class=``OCCURRENCE"{\textgreater}\textbf{released}{\textless}/EVENT{\textgreater} air traffic control tapes from the night the TWA Flight eight hundred {\textless}EVENT eid=``e2" class=``OCCURRENCE"{\textgreater}\textbf{went}{\textless}/EVENT{\textgreater} down.\\
-
-\subsection*{Instances created from events}
-{\textless}MAKEINSTANCE eventID=``e1" eiid=``ei252" tense=``PAST" aspect=``NONE" polarity=``POS" pos=``VERB" /{\textgreater}\\\\
-{\textless}MAKEINSTANCE eventID=``e2" eiid=``ei253" tense=``PAST" aspect=``NONE" polarity=``POS" pos=``VERB" /{\textgreater}\\
-
-\subsection*{TLINK identification/classification}
-\textbf{(My summary of relation parentheses)}\\
-
-{\textless}TLINK lid=``l2" relType=``INCLUDES" timeID=``t53" relatedToEventInstance=``ei252" /{\textgreater}\\\\
-(\emph{today} INCLUDES \emph{released})\\
-
-{\textless}TLINK lid=``l5" relType=``AFTER" eventInstanceID=``ei252" relatedToEventInstance=``ei253" /{\textgreater}\\\\
-(\emph{released} AFTER \emph{went})
+%\onecolumn
+%\section*{Appendix}
+%
+%\subsection*{Original sentence}
+%In Washington today, the Federal Aviation Administration released air traffic control tapes from the night the TWA Flight eight hundred went down.\\
+%
+%\subsection*{Sentence with TIMEX and EVENT entities extracted}
+%In Washington {\textless}TIMEX3 tid=``t53" type=``DATE" value=``1998-01-14" temporalFunction=``true" functionInDocument=``NONE" anchorTimeID=``t0"{\textgreater}\textbf{today}{\textless}/TIMEX3{\textgreater}, the Federal Aviation Administration {\textless}EVENT eid=``e1" class=``OCCURRENCE"{\textgreater}\textbf{released}{\textless}/EVENT{\textgreater} air traffic control tapes from the night the TWA Flight eight hundred {\textless}EVENT eid=``e2" class=``OCCURRENCE"{\textgreater}\textbf{went}{\textless}/EVENT{\textgreater} down.\\
+%
+%\subsection*{Instances created from events}
+%{\textless}MAKEINSTANCE eventID=``e1" eiid=``ei252" tense=``PAST" aspect=``NONE" polarity=``POS" pos=``VERB" /{\textgreater}\\\\
+%{\textless}MAKEINSTANCE eventID=``e2" eiid=``ei253" tense=``PAST" aspect=``NONE" polarity=``POS" pos=``VERB" /{\textgreater}\\
+%
+%\subsection*{TLINK identification/classification}
+%\textbf{(My summary of relation parentheses)}\\
+%
+%{\textless}TLINK lid=``l2" relType=``INCLUDES" timeID=``t53" relatedToEventInstance=``ei252" /{\textgreater}\\\\
+%(\emph{today} INCLUDES \emph{released})\\
+%
+%{\textless}TLINK lid=``l5" relType=``AFTER" eventInstanceID=``ei252" relatedToEventInstance=``ei253" /{\textgreater}\\\\
+%(\emph{released} AFTER \emph{went})
 
 \end{document}
