@@ -16,27 +16,29 @@
 %%e.agirre@ehu.es or Sergi.Balari@uab.es
 %% and that of ACL 08 by Joakim Nivre and Noah Smith
 
-\documentclass[11pt]{article}
-\usepackage{coling2016}
-\usepackage{times}
-\usepackage{url}
-\usepackage{latexsym}
-\usepackage{float}
-\usepackage[pdftex]{graphicx}
-\usepackage{covington}
-\usepackage{enumitem}
-\usepackage{relsize}
-\usepackage{mrs}
-
 %\documentclass[11pt]{article}
-%\usepackage{/home/wlane/Documents/coling2016}
+%\usepackage{coling2016}
 %\usepackage{times}
 %\usepackage{url}
 %\usepackage{latexsym}
 %\usepackage{float}
 %\usepackage[pdftex]{graphicx}
-%\usepackage{/home/wlane/Documents/covington}
-%\usepackage{/home/wlane/Downloads/mrs}
+%\usepackage{covington}
+%\usepackage{enumitem}
+%\usepackage{relsize}
+%\usepackage{mrs}
+
+\documentclass[11pt]{article}
+\usepackage{/home/wlane/Documents/coling2016}
+\usepackage{times}
+\usepackage{/home/wlane/Documents/enumitem}
+\usepackage{url}
+\usepackage{latexsym}
+\usepackage{relsize}
+\usepackage{float}
+\usepackage[pdftex]{graphicx}
+\usepackage{/home/wlane/Documents/covington}
+\usepackage{/home/wlane/Downloads/mrs}
 
 %\setlength\titlebox{5cm}
 
@@ -419,9 +421,8 @@ Type 4 errors involved a noun phrase as one of the events, and the relation of t
 
 The confusion matrix in Table \ref{matrix} shows our system (columns) vs. gold (rows) performance on our dev data. It is evident that our system only uses the AFTER and BEFORE labels, but that the number of other labels is quite small. 35 out of the 121 dev instances were misclassified, most of which were misclassified as AFTER. Out of the 10 classification errors observed above, two of them, (\ref{miami}) and (\ref{kuwait}), were fixed with our addition of MRS-based features.
 
-In (\ref{miami}), our improved system correctly classified \emph{said} as BEFORE \emph{sue}. This was able to happen without a feature that explicitly connected the events with \emph{might}, despite this example being one of our motivations for experimenting with the unhelpful unique predication feature. In (\ref{kuwait}), our improved system correctly classified \emph{criticized} as AFTER \emph{dispatched}, which may be due to the ERG's effective handling of passive forms (as was shown in Figure \ref{mrs}).
+In (\ref{miami}), our improved system correctly classified \emph{said} as BEFORE \emph{sue}. This occured without a feature that explicitly connected the events with \emph{might}, despite this example being one of our motivations for experimenting with the unhelpful unique predication feature. In (\ref{kuwait}), our improved system correctly classified \emph{criticized} as AFTER \emph{dispatched}, which may be due to the ERG's effective handling of passive forms (as was shown in Figure \ref{mrs}).
 
-While it would be nice to see more of these misclassifications get fixed, it is promising to see both a Type 1 and Type 2 error corrected, resulting in a 20\% error reduction on our error analysis selection. We were hoping that some of the noun event errors would be fixed, especially due to the two different path features which specify part of speech, but none of our selected dev instances were corrected.
 
 \section{Conclusion}
 \label{conclusion}
