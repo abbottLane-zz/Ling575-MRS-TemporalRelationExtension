@@ -429,6 +429,8 @@ In (\ref{miami}), our improved system correctly classified \emph{said} as BEFORE
 
 %(\exampleno) \label{iraqi} \emph{The Iraqi ambassador said on Tuesday that Iraq would [retaliate] against Venezuela and other OPEC oil cartel members if they [boost] oil production}\\\\
 
+\subsection{Parse Rate}
+Our reported parse failure rate for ACE and the ERG over all of our data (training, dev, and test) was 21.8\%. We surmised that the magnitude of this figure was likely due to the length and complexity of the sentences examined by the system, which come from our formal newspaper-based corpora. We examined the sentences individually and found that in many cases, the events with which we were concerned were located in the same or adjacent clauses, but that the full sentence being fed to the system sometimes contained more clauses than necessary for the event-to-event temporal relation analysis. \\\indent Having already run our evaluation, we set out to address the sub-problem of improving the ERG's parse success rate by taking sentences that failed to parse and segmenting them by their comma-delimited clauses. After dividing the original sentence into clauses, we then identify the clauses relevent to the two events whose temporal relation we want to predict, and send that back into the parser. This simple sentence-reduction method improved our parse success rate by a relative 23.5\%. In future work, it makes sense to implement such a scheme to increase parse coverage, which in turn leads to more consistent feature vectors for the machine learning algorithm.   
 \section{Conclusion}
 \label{conclusion}
 
