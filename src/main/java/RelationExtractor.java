@@ -17,7 +17,7 @@ public class RelationExtractor {
             //TempEval2013Evaluation.main(evalArgs);
 
 
-//            System.out.println("Now running our version of the extractor...");
+            System.out.println("Now running our version of the extractor...");
             OurTempEval2013Extension.main(evalArgs);
 
 
