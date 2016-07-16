@@ -51,23 +51,23 @@
 \title{Enhancing Temporal Relation Classification in English with MRS-based Features}
 
 % For use in final copy
-\author{Martin Horn \\
-  Department of Linguistics \\
-  University of Washington \\
-  Seattle, WA 98195 \\
-  {\tt mrtnhorn@uw.edu} \\\And
-  William Lane \\
-  Department of Linguistics \\
-  University of Washington \\
-  Seattle, WA 98195 \\
-  {\tt wlane@uw.edu} \\}
+%\author{Martin Horn \\
+%  Department of Linguistics \\
+%  University of Washington \\
+%  Seattle, WA 98195 \\
+%  {\tt mrtnhorn@uw.edu} \\\And
+%  William Lane \\
+%  Department of Linguistics \\
+%  University of Washington \\
+%  Seattle, WA 98195 \\
+%  {\tt wlane@uw.edu} \\}
 
 \date{}
 
 \begin{document}
 \maketitle
 \begin{abstract}
-This project explores the use of semantic features in improving a system which extracts and relates temporal expressions and events in general domain text. We use a top-performing system which participated in TempEval-3 as a baseline and add features derived from Minimal Recursion Semantics (MRS) representations derived from parsing the shared task data. Specifically, we focus on the component of the system which classifies the relation between two intra-sentential events. We have found that incorporating the MRS into the existing feature set improves F1 score by 2.5\% (relative) using official shared task test data and evaluation metric.
+This project explores the use of semantic features to improve a system which extracts and relates temporal expressions and events in general domain text. As our base system we use ClearTK-TimeML, a top-performing entry to the 2013 TempEval-3 shared task, and add features derived from Minimal Recursion Semantics (MRS) representations derived from parsing the shared task data. Specifically, we focus on the component of the system which classifies the relation between two intra-sentential events. We have found that incorporating features derived from an MRS-based representation improves F1 score by 2.5\% (relative) as measured by the official shared task test data and evaluation metric.
 \end{abstract}
 
 \section{Introduction}
@@ -105,13 +105,13 @@ This project explores the use of semantic features in improving a system which e
 %    % \url{http://creativecommons.org/licenses/by/4.0/}
 %}
 
-Identifying and relating temporal expressions in free text remains a difficult task in NLP. There are many reasons for this: temporal expressions vary widely in form, they are difficult to normalize, and classifying their relation to each other requires context. However, the ability to perform these tasks is very useful for a variety of domains. For example, in the clinical domain, interpreting temporal information in clinical notes can give valuable insight into patient symptoms, diagnoses, and treatments.
+Identifying and relating temporal expressions in free text is a difficult task in NLP. There are many reasons for this: temporal expressions vary widely in form, they are difficult to normalize, and classifying their relation to each other requires context. However, the ability to perform these tasks is very useful in a variety of domains. For example, in the clinical domain, interpreting temporal information in clinical notes can give valuable insight into patient symptoms, diagnoses, and treatments.
 
-This task is so difficult yet important that an entire temporal shared task has emerged under the umbrella of SemEval. In this paper, we work on the TempEval-3 task from 2013, which focuses on automatically identifying temporal expressions, events, and temporal relations in text \cite{UzZaman:13}.
+The importance of this task is evidenced by the organization of a temporal relation extraction shared task under the umbrella of the SemEval workshop. In this paper, we work on the TempEval-3 task from 2013, which focuses on automatically identifying temporal expressions, events, and temporal relations in text \cite{UzZaman:13}.
 
-Existing solutions to this task have typically been either rule-based systems or machine learning systems which incorporate n-gram and/or paths from syntactic constituency or dependency trees. We experiment using features derived from semantic representations in order to improve temporal relation classification, which is inherently a semantic task. We use English Resource Semantics (ERS) representations produced by the English Resource Grammar \cite{Flickinger:00} which are based on the Minimal Recursion Semantics (MRS) formalism \cite{Copestake:05}, from which we derive features to be added to a baseline system which uses an SVM classifier. To our knowledge, this is the first time that features derived from MRS analyses have been used in a temporal information extraction task.
+Existing solutions to this task have typically been either rule-based systems or machine learning systems which incorporate n-gram and/or paths from syntactic constituency or dependency trees. We experiment using features derived from semantic representations in order to improve temporal relation classification, which is inherently a semantic task. We use English Resource Semantics (ERS) representations produced by the English Resource Grammar \cite{Flickinger:00} which are based on the Minimal Recursion Semantics (MRS) formalism \cite{Copestake:05}, from which we derive features to be added to a baseline system which uses an SVM classifier. To our knowledge, this is the first time that features derived from ERS/MRS analyses have been used in a temporal information extraction task.
 
-We have found that adding these semantic features to an existing baseline feature set of n-grams, syntactic paths, and morphosyntactic properties increases F1 score by as much as 2.5\% and recall by as much as 4\%. In Section \ref{related-work}, we cover some related work in deriving MRS features, the target task we are approaching, and the baseline system we build upon. We outline our main approach in Section \ref{methodology}, provide our evaluation metric and results in Section \ref{eval}, and finally discuss our results and perform error analysis in Section \ref{discussion}.
+We have found that adding these semantic features to an existing baseline feature set of n-grams, syntactic paths, and morphosyntactic properties increases F1 score by as much as 2.5\% and recall by as much as 4\%. In Section \ref{related-work}, we cover some related work in deriving ERS features, the target task we are approaching, and the baseline system we build upon. We outline our main approach in Section \ref{methodology}, provide our evaluation metric and results in Section \ref{eval}, and finally discuss our results and perform error analysis in Section \ref{discussion}.
 
 
 \section{Related Work}
@@ -119,7 +119,7 @@ We have found that adding these semantic features to an existing baseline featur
 
 %\subsection{Background}
 
-MRS has been used in a variety of NLP tasks. \newcite{Packard:14} crawl MRS analyses in order to perform a rule-based approach to negation scope resolution. \newcite{Kramer:14} use similar techniques to extract salient relations between semantic predicates in the ERS for use as features in a Naive Bayes-based sentiment classification system. In this work, we look at expanding this use of ERS-based features to a new domain where semantic dependency paths are very relevant.
+ERS has been used in a variety of NLP tasks. \newcite{Packard:14} crawl ERS analyses in order to perform a rule-based approach to negation scope resolution. \newcite{Kramer:14} use similar techniques to extract salient relations between semantic predicates in the ERS for use as features in a Naive Bayes-based sentiment classification system. In this work, we look at expanding this use of ERS-based features to a new domain where semantic dependency paths are very relevant.
 
 \subsection{Target Task}
 
@@ -131,19 +131,19 @@ Teams that wished to only complete Task C could either identify the pairs of ent
 
 The baseline system that we are using is called ClearTK-TimeML. It was the best performing system (by F1 score) in the TempEval-3 end-to-end temporal relation extraction task (Task ABC). ClearTK is a machine learning and NLP framework for information extraction developed by the University of Colorado's Center for Computational Language and Education Research group. The Time-ML module was developed by Steven Bethard, now at the University of Alabama \cite{Bethard:14}.
 
-Though the system performs temporal entity extraction in addition to relation identification/classification, the focus here will be on the relation component since that is the most intuitively relevant for MRS incorporation. Specifically, we decided to focus our efforts on the event-to-event classification model, with the intuition that there exists more diverse and interesting semantic information between two event pairs rather than between event and timestamp pairs.
+Though the system performs temporal entity extraction in addition to relation identification/classification, the focus here will be on the relation component since that is the most intuitively relevant for ERS incorporation. Specifically, we decided to focus our efforts on the event-to-event classification model, with the intuition that there exists more diverse and interesting semantic information between two event pairs rather than between event and timestamp pairs.
 
-In Bethard's event-to-event model, only pairs whose syntactic path from one event to the other matched the following regex of syntactic categories and up/down movements were considered:
+%In Bethard's event-to-event model, only pairs whose syntactic path from one event to the other matched the following regex of syntactic categories and up/down movements were considered:
 
-\begin{itemize}[labelindent=2em, labelsep*=2em, leftmargin=!]
+%\begin{itemize}[labelindent=2em, labelsep*=2em, leftmargin=!]
 
-\item[(\exampleno)] \label{syntax_regex}
+%\item[(\exampleno)] \label{syntax_regex}
 
-\^{}$((VP\uparrow|ADJP\uparrow|NP\uparrow)(VP|ADJP|S|SBAR)$\\ $(\downarrow(PP|SBAR|S))*(({\downarrow}VP|{\downarrow}ADJP)*|({\downarrow}NP)*)$\$.
-\end{itemize}
+%\^{}$((VP\uparrow|ADJP\uparrow|NP\uparrow)(VP|ADJP|S|SBAR)$\\ $(\downarrow(PP|SBAR|S))*(({\downarrow}VP|{\downarrow}ADJP)*|({\downarrow}NP)*)$\$.
+%\end{itemize}
 
 
-The domain of labels was \{BEFORE, AFTER\}, and the features used were \cite{Bethard:13}:
+The domain of relation gold labels used by Bethard for the event-to-event classification were \{BEFORE, AFTER\}, and the features he used were \cite{Bethard:13}:
 
 \begin{itemize}
 \item Each event's aspect, class, and tense
@@ -160,7 +160,7 @@ Bethard tested a few different machine learning classifiers but used LIBLINEAR S
 
 %\begin{figure*}[t]
 %{\small \texttt{[ LTOP: h0 INDEX: e2 [ e SF: prop TENSE: pres MOOD: indicative PROG: - PERF: - ] RELS: \textless [ focus\_d\textless0:60\textgreater LBL: h1 ARG0: e4 [ e SF: prop TENSE: untensed MOOD: indicative PROG: - PERF: - ] ARG1: e2 ARG2: i5 ]  [ \_public\_a\_1\textless0:9\textgreater LBL: h1 ARG0: e6 [ e SF: prop TENSE: untensed MOOD: indicative PROG: - PERF: - ] ARG1: e2 ]  [ pron\textless10:14\textgreater LBL: h7 ARG0: x3 [ x PERS: 3 NUM: pl PT: std ] ]  [ pronoun\_q\textless10:14\textgreater LBL: h8 ARG0: x3 RSTR: h9 BODY: h10 ]  [ \textbf{\_unwilling\_a\_1}\textless19:28\textgreater LBL: h1 ARG0: e2 ARG1: x3 ARG2: h11 ]  [ \textbf{\_make\_v\_1}\textless32:36\textgreater LBL: h12 ARG0: e13 [ e SF: prop-or-ques TENSE: untensed MOOD: indicative PROG: - PERF: - ] ARG1: x3 ARG2: x14 [ x PERS: 3 NUM: sg ] ARG3: u15 ]  [ \_any\_q\textless37:40\textgreater LBL: h16 ARG0: x14 RSTR: h17 BODY: h18 ]  [ compound\textless41:60\textgreater LBL: h19 ARG0: e20 [ e SF: prop TENSE: untensed MOOD: indicative PROG: - PERF: - ] ARG1: x14 ARG2: x21 [ x PERS: 3 NUM: sg GEND: n ] ]  [ udef\_q\textless41:49\textgreater LBL: h22 ARG0: x21 RSTR: h23 BODY: h24 ]  [ \_sweep\_v\_1\textless41:49\textgreater LBL: h25 ARG0: e26 [ e SF: prop TENSE: untensed MOOD: indicative PROG: + PERF: - ] ARG1: i27 ARG2: p28 ]  [ nominalization\textless41:49\textgreater LBL: h29 ARG0: x21 ARG1: h25 ]  [ \_assertion\_n\_of\textless50:60\textgreater LBL: h19 ARG0: x14 ARG1: i30 ] \textgreater HCONS: \textless h0 qeq h1 h9 qeq h7 h11 qeq h12 h17 qeq h19 h23 qeq h29 \textgreater ]}}
-%\caption{MRS Analysis for \emph{Publicly, they are \textbf{unwilling} to \textbf{make} any sweeping assertion.} \label{mrs}}
+%\caption{ERS Analysis for \emph{Publicly, they are \textbf{unwilling} to \textbf{make} any sweeping assertion.} \label{mrs}}
 %\end{figure*}
 
 %\begin{figure*}[width=\textwidth,keepaspectratio, ]
@@ -192,7 +192,7 @@ Bethard tested a few different machine learning classifiers but used LIBLINEAR S
 %    \srole{CARG}{\sconst{Harold}}}}
 %  {\sqeq{15}{17}, \sqeq{7}{12}, \sqeq{1}{2}}
 %
-%\caption{MRS Analysis for \emph{The [yelling]$^{Event1}$ [confused]$^{Event2}$ poor Harold} \label{mrs}}
+%\caption{ERS Analysis for \emph{The [yelling]$^{Event1}$ [confused]$^{Event2}$ poor Harold} \label{mrs}}
 
 
 %\begin{figure*}[t]
@@ -243,29 +243,29 @@ Bethard tested a few different machine learning classifiers but used LIBLINEAR S
     \srole{ARG2}{\svar{x}{21}{}}}}
   {\sqeq{22}{23}, \sqeq{18}{24}, \sqeq{17}{14}, \sqeq{7}{4}, \sqeq{1}{2}}
 }
-\caption{MRS Analysis for \emph{They yelled and wept when the [decision] was [announced].} \label{mrs}}
+\caption{ERS Representation for \emph{They yelled and wept when the [decision] was [announced].} \label{mrs}}
 \end{figure*}
 
 \section{Methodology}
 \label{methodology}
 
-Our general approach is threefold: parse the training and test sentences with the English Resource Grammar \cite{Flickinger:00} in order to obtain MRS representations, process the MRS in order to extract features, and inject those features into the baseline's feature set. The hope is that given a sentence and two events which have been pre-identified from that sentence, our semantic features will improve the machine learner's ability to classify the relation between the events as BEFORE or AFTER.
+Our general approach is threefold: parse the training and test sentences with the English Resource Grammar \cite{Flickinger:00} in order to obtain ERS representations, process the ERS in order to extract features, and inject those features into the baseline's feature set. The hope is that given a sentence and two events which have been pre-identified from that sentence, our semantic features will improve the machine learner's ability to classify the relation between the events as BEFORE or AFTER.
 
 
 \subsection{ERG Parsing}
 
-In order to attain MRS analyses, we use an exhaustive hand-built precision grammar called the LingGO English Resource Grammar (ERG)\footnote{http://www.delph-in.net/erg/} \cite{Flickinger:00}. We use the Answer Constraint Engine (ACE)\footnote{http://sweaglesw.org/linguistics/ace/} in order to parse a given sentence with the ERG and receive the MRS analysis for the sentence. Because the ERG is a hand-built precision grammar, it sometimes cannot parse a given sentence, whether that be due to an ungrammatical structure, misspelling, or resource limitations with long sentences. Over all of our data (training, dev, and test), 21.8\% of our sentences return no parse. In the case of a sentence with no parse, we do not add any additional features and treat the baseline feature set as a back-off. Figure \ref{mrs} shows an example of an MRS analysis from the ERG for the sentence \emph{They yelled and wept when the decision was announced.}
+In order to attain ERS analyses, we use an exhaustive hand-built precision grammar called the LingGO English Resource Grammar (ERG)\footnote{http://www.delph-in.net/erg/} \cite{Flickinger:00}. We use the Answer Constraint Engine (ACE)\footnote{http://sweaglesw.org/linguistics/ace/} in order to parse a given sentence with the ERG and receive the ERS analysis for the sentence. Because the ERG is a hand-built precision grammar, it sometimes cannot parse a given sentence, whether that be due to an ungrammatical structure, misspelling, or resource limitations with long sentences. In the case where ACE fails to return a parse on a given sentence, we do not add any additional features and treat the baseline feature set as a back-off. Figure \ref{mrs} shows an example of an ERS analysis from the ERG for the sentence \emph{They yelled and wept when the decision was announced.}
 
 \subsection{Feature Design}
 
-Once we have an MRS analysis for a given sentence, we connect the two given events to elementary predications (EPs) in the MRS using character spans. In Figure \ref{mrs}, the noun \emph{decision} and the verb \emph{announced} have been selected as the two events in the sentence. We then process the MRS analysis using pyDelphin\footnote{https://github.com/goodmami/pydelphin} for both static features (explicitly given strings in the MRS) or those attained from crawling the MRS graph.
+Once we have an ERS analysis for a given sentence, we connect the two given events to elementary predications (EPs) in the ERS using character spans. In Figure \ref{mrs}, the noun \emph{decision} and the verb \emph{announced} have been selected as the two events in the sentence. We then process the ERS analysis using pyDelphin\footnote{https://github.com/goodmami/pydelphin} for both static features (explicitly given strings in the ERS) or those attained from crawling the ERS graph.
 
 %unwilling1928make3236=:=e1LEMMA=unwilling e2LEMMA=make e1TENSE=pres e1PROG=- e1SF=prop e1MOOD=indicative e1PERF=- e2TENSE=untensed e2PROG=- e2SF=prop-or-ques e2MOOD=indicative e2PERF=- DIRECT=e1#a[ARG2#e2#v] PATH=e1#a,ARG2#e2#v 
 
 %decision3038announced4352=:=e1LEMMA=decision e2LEMMA=announce e1NUM=sg e1PERS=3 e2TENSE=past e2PROG=- e2SF=prop e2MOOD=indicative e2PERF=- DIRECT=e2#v[#ARG2#e1#n] PATH=NO_PATH 
 
 
-\subsubsection{Static Features}
+\subsubsection{Event Property Features}
 
 The EPs each have a predicate symbol, such as \texttt{\_announce\_v\_to} in Figure \ref{mrs}, one component of which is a lemma, (in this case, \textit{announce}). For each event, we add its corresponding EP's lemma name, such as \texttt{e1LEMMA=decision} and \texttt{e2LEMMA=announce} for the events in Figure \ref{mrs}. These normalized lemmas may be useful as features because they add a level of abstraction from the surface string. Morphological variation in words can lead to data sparsity, so using lemmas may capture broader patterns.\footnote{By using just the lemma, we lose the word sense distinctions that the ERG makes, usually indicated by a number at the end of the predicate symbol.}
 
@@ -282,21 +282,22 @@ For each event, we also include the variable properties of the associated EP. Fo
 \item \texttt{e2PERF=-}
 \end{itemize}
 
-Some of these properties, especially the verb properties, can be useful cues for determining when one event occurred in relation to another. The baseline system already includes tense and aspect features, but we experiment with adding them as well to see if they may reinforce the existing features (if the features assign the correct value) or counteract them (acting as ``good noise" if the existing values are incorrect). Mood may be useful because subjunctive verbs refer to events that likely have not occurred.
+Some of these properties, especially the verb properties, can be useful cues for determining when one event occurred in relation to another. 
+%The baseline system already includes tense and aspect features, but we experiment with adding them as well to see if they may reinforce the existing features (if the features assign the correct value) or counteract them (acting as ``good noise" if the existing values are incorrect). Mood may be useful because subjunctive verbs refer to events that likely have not occurred.
 
-\subsubsection{MRS Crawling}
+\subsubsection{ERS Path Extraction}
 
-Beyond using static labels explicitly stated in the MRS representation, MRS can also be traversed by using the analysis as a semantic dependency graph. Each EP has a set of arguments which connect the EP to other EPs. We hope to capture semantic relationships by finding a path from one event to another in a sentence. We follow \newcite{Packard:14}'s approach of functor crawling for our \emph{full path} feature and argument crawling for our \emph{direct path} feature.
+Beyond using static labels explicitly stated in the ERS representation, ERS can also be traversed by using the analysis as a semantic dependency graph. Each EP has a set of arguments which connect the EP to other EPs. We hope to capture semantic relationships by finding a path from one event to another in a sentence. We follow \newcite{Packard:14}'s approach of functor crawling for our \emph{full path} feature and argument crawling for our \emph{direct path} feature.
 
 First, we find the shortest path between the two event EPs, starting at the second-occurring event in the sentence and functor crawling back until we reach the first event. The idea here is that we want to capture semantic relations between events, rather than just a syntactic path as is used in the baseline system. We include the event number as well as part of speech and argument number for each node in the path. For example, the feature for the path between e1 (\emph{unwilling}) and e2 (\emph{make}) in (\ref{sent2}) is \texttt{PATH=e1\#a,ARG2\#e2\#v}.
 \begin{itemize}[labelindent=2em, labelsep*=2em, leftmargin=!]
 \item[(\exampleno)]\label{sent2} \emph{Publicly, they are [unwilling] to [make] any sweeping assertion.}
 \end{itemize}
-The MRS in Figure \ref{mrs} returns the feature \texttt{PATH=NO\_PATH} because the events are not connected through functor crawling.
+The ERS in Figure \ref{mrs} returns the feature \texttt{PATH=NO\_PATH} because the events are not connected through functor crawling.
 
 We also use argument crawling to find situations in which one event is in the argument set of the other event. These provide us with ``direct" paths between the two events. It is possible for this feature to look very similar to the PATH feature above. This is the case in (\ref{sent2}), for which our direct path feature is \texttt{DIRECT=e1\#a[ARG2\#e2\#v]}.
 
-However, in cases like the sentence in Figure \ref{mrs}, where no functor path is found, the argument-crawled path comes in handy: \texttt{DIRECT=e2\#v[\#ARG2\#e1\#n]}. Here, the MRS captures the passive nature of the verb \emph{announced} and the fact that \emph{decision} is its argument rather than vice versa (as the order in the sentence might falsely indicate just looking at n-grams). If this happens enough, the machine learning system may pick up the pattern that a noun which occurs as the ARG2 of a verb tends to happen before the verb. This is the case for the noun \emph{decision} in relation to the verb \emph{announced} in Figure \ref{mrs}.
+However, in cases like the sentence in Figure \ref{mrs}, where no functor path is found, the argument-crawled path comes in handy: \texttt{DIRECT=e2\#v[\#ARG2\#e1\#n]}. Here, the ERS captures the passive nature of the verb \emph{announced} and the fact that \emph{decision} is its argument rather than vice versa (as the order in the sentence might falsely indicate just looking at n-grams). If this happens enough, the machine learning system may pick up the pattern that a noun which occurs as the ARG2 of a verb tends to happen before the verb. This is the case for the noun \emph{decision} in relation to the verb \emph{announced} in Figure \ref{mrs}.
 
 \subsection{Incorporating Features into Baseline}
 
@@ -317,7 +318,7 @@ Our development test data is a random set of 20 documents from the TimeBank and 
 \resizebox{\linewidth}{!}{%
 \begin{tabular}{|l|l|l|l|l|l|l|l|l|l|l|l|l}
 \cline{1-12}
-\multicolumn{6}{|l|}{ClearTK Baseline}      & \multicolumn{6}{l|}{ClearTK Baseline+MRS}                 &                                   \\ \cline{1-12}
+\multicolumn{6}{|l|}{ClearTK Baseline}      & \multicolumn{6}{l|}{ClearTK Baseline+ERS}                 &                                   \\ \cline{1-12}
 F1   & P    & R    & \#Gold & \#System & \#Correct & F1   & P    & R    & \#Gold & \#System & \#Correct &                                   \\ \hline
 .727 & .727 & .727 & 66     & 66       & 48        & .727 & .727 & .727 & \textbf{77}     & \textbf{77}       & 56        & \multicolumn{1}{l|}{OVERALL}      \\ \hline
 .733 & .815 & .772 & 27     & 30       & 22        & \textbf{.774} & .727 & .750 & 33     & 31       & 24        & \multicolumn{1}{l|}{AFTER}        \\ \hline
@@ -352,18 +353,17 @@ Table \ref{official} shows that our added features have increased recall by 1.11
 \label{official}
 \begin{tabular}{|l|l|l|l|l|l|}
 \hline
-\multicolumn{3}{|l|}{ClearTK Baseline} & \multicolumn{3}{l|}{ClearTK Baseline+MRS} \\ \hline
+\multicolumn{3}{|l|}{ClearTK Baseline} & \multicolumn{3}{l|}{ClearTK Baseline+ERS} \\ \hline
 F1            & P             & R             & F1            & P            & R            \\ \hline
 28.53       & 29.53      & 27.59       & \textbf{29.23}       & \textbf{29.79}      & \textbf{28.70}        \\ \hline
 \end{tabular}
 \caption{Official Evaluation on Platinum Data \label{official}}
 \end{table}
 
-
 \section{Discussion}
 \label{discussion}
 
-A cursory glance at the internal evaluation results in Table \ref{internal} shows that adding MRS-based features didn't improve overall precision, recall, and F1. However, as described in Section \ref{metrics}, this metric only looks at the instances in which the gold standard and system both provide a TLINK for the given event pair. Changing the feature set can actually change which instances are given a TLINK by the system, and thus change the intersection between gold and system predictions. So, while our actual \emph{score} didn't change, the number of event pairs judged by the system increased by 11. Theoretically this should improve recall, but this internal metric is in a sense \emph{recall-blind}.
+A cursory glance at the internal evaluation results in Table \ref{internal} shows that adding ERS-based features didn't improve overall precision, recall, and F1. However, as described in Section \ref{metrics}, this metric only looks at the instances in which the gold standard and system both provide a TLINK for the given event pair. Changing the feature set can actually change which instances are given a TLINK by the system, and thus change the intersection between gold and system predictions. So, while our actual \emph{score} didn't change, the number of event pairs judged by the system increased by 11. Theoretically this should improve recall, but this internal metric is in a sense \emph{recall-blind}.
 
 This means that our improvements are best seen in the official evaluation script, which is \emph{recall-sensitive}. While the platinum annotations may have been incomplete, which can hurt precision if a system annotates a relation that isn't in the platinum, the official evaluation metric allows recall to improve because it includes the symmetric difference of the platinum and system annotation sets. Since our feature additions cause the system to annotate more relations than it was in the baseline, recall sees the largest gain. We surmise that this may be due to the fact that the extra features allow the baseline system to cross a confidence threshold regarding a relation that it wasn't able to with the baseline feature set.
 
@@ -392,7 +392,7 @@ We also experimented with a method of automatically extracting predications like
 \multicolumn{1}{|l|}{IS\_INCLUDED} & 3                          & 0                           & 0                              & 0                         & 0                             & 0                             & 0                                & 0                                 \\ \hline
 \multicolumn{1}{|l|}{SIMULTANEOUS} & 6                          & 6                           & 0                              & 0                         & 0                             & 0                             & 0                                & 0                                 \\ \hline
 \end{tabular}}
-\caption{Confusion Matrix on Dev Data for ClearTK Baseline+MRS \label{matrix}}
+\caption{Confusion Matrix on Dev Data for ClearTK Baseline+ERS \label{matrix}}
 \end{table*}
 
 
@@ -419,7 +419,7 @@ Type 3 errors were caused by seemingly incorrect annotations, where the system a
 Type 4 errors involved a noun phrase as one of the events, and the relation of the NP to the other event was misinterpreted. For example, in (\ref{florida}), the noun \emph{ruling} occurs temporally before \emph{called}, but the baseline misclassified \emph{called} as BEFORE \emph{ruling} (most likely due to the past tense of the verb).\\\\
 (\exampleno) \label{florida} \emph{Jose Basulto, founder of Brothers to the Rescue, a Cuban exile group that frequently rescues Cuban refugees from the Straits of Florida, [called] the latest [ruling] outrageous.}\\\\
 
-The confusion matrix in Table \ref{matrix} shows our system (columns) vs. gold (rows) performance on our dev data. It is evident that our system only uses the AFTER and BEFORE labels, but that the number of other labels is quite small. 35 out of the 121 dev instances were misclassified, most of which were misclassified as AFTER. Out of the 10 classification errors observed above, two of them, (\ref{miami}) and (\ref{kuwait}), were fixed with our addition of MRS-based features.
+The confusion matrix in Table \ref{matrix} shows our system (columns) vs. gold (rows) performance on our dev data. It is evident that our system only uses the AFTER and BEFORE labels, but that the number of other labels is quite small. 35 out of the 121 dev instances were misclassified, most of which were misclassified as AFTER. Out of the 10 classification errors observed above, two of them, (\ref{miami}) and (\ref{kuwait}), were fixed with our addition of ERS-based features.
 
 In (\ref{miami}), our improved system correctly classified \emph{said} as BEFORE \emph{sue}. This occured without a feature that explicitly connected the events with \emph{might}, despite this example being one of our motivations for experimenting with the unhelpful unique predication feature. In (\ref{kuwait}), our improved system correctly classified \emph{criticized} as AFTER \emph{dispatched}, which may be due to the ERG's effective handling of passive forms (as was shown in Figure \ref{mrs}).
 
@@ -430,11 +430,11 @@ In (\ref{miami}), our improved system correctly classified \emph{said} as BEFORE
 %(\exampleno) \label{iraqi} \emph{The Iraqi ambassador said on Tuesday that Iraq would [retaliate] against Venezuela and other OPEC oil cartel members if they [boost] oil production}\\\\
 
 \subsection{Parse Rate}
-Our reported parse failure rate for ACE and the ERG over all of our data (training, dev, and test) was 21.8\%. We surmised that the magnitude of this figure was likely due to the length and complexity of the sentences examined by the system, which come from our formal newspaper-based corpora. We examined the sentences individually and found that in many cases, the events with which we were concerned were located in the same or adjacent clauses, but that the full sentence being fed to the system sometimes contained more clauses than necessary for the event-to-event temporal relation analysis. \\\indent Having already run our evaluation, we set out to address the sub-problem of improving the ERG's parse success rate by taking sentences that failed to parse and segmenting them by their comma-delimited clauses. After dividing the original sentence into clauses, we then identify the clauses relevent to the two events whose temporal relation we want to predict, and send that back into the parser. This simple sentence-reduction method improved our parse success rate by a relative 23.5\%. In future work, it makes sense to implement such a scheme to increase parse coverage, which in turn leads to more consistent feature vectors for the machine learning algorithm.   
+The parse failure rate for ACE and the ERG over all of our evaluation data was 21.8\%. We surmised that the magnitude of this figure was likely due to the length and complexity of the sentences examined by the system, which come from our formal newspaper-based corpora. We examined the sentences individually and found that in many cases, the events with which we were concerned were located in the same or adjacent clauses, but that the full sentence being fed to the system sometimes contained more clauses than necessary for the event-to-event temporal relation analysis. \\\indent Having already run our evaluation, we set out to address the sub-problem of improving the ERG's parse success rate by taking sentences that failed to parse and segmenting them by their comma-delimited clauses. After dividing the original sentence into clauses, we then identify the clauses relevent to the two events whose temporal relation we want to predict, and send that back into the parser. This simple sentence-reduction method reduced our parse error rate on the development data from 17.6\% to 13.4\%. In future work, it makes sense to implement such a scheme to increase parse coverage, which in turn leads to more consistent feature vectors for the machine learning algorithm.   
 \section{Conclusion}
 \label{conclusion}
 
-Our motivation in this project was to apply semantic representations to an inherently semantic task. Task C of TempEval-3 involves classifying the temporal relationship between events in the same sentence, which is a task which could greatly benefit from explicit semantic dependencies, rather than just n-gram and syntactic features. We include MRS-based features into an existing SVM classifier baseline, which results in modest but measurable improvements using the shared task's official evaluation metric. We show through error analysis what features did and did not prove effective, as well as some concrete examples of improvements that our additions made.
+Our motivation in this project was to apply semantic representations to an inherently semantic task. Task C of TempEval-3 involves classifying the temporal relationship between events in the same sentence, which is a task which could greatly benefit from explicit semantic dependencies, rather than just n-gram and syntactic features. We include ERS-based features into an existing SVM classifier baseline, which results in modest but measurable improvements using the shared task's official evaluation metric. We show through error analysis what features did and did not prove effective, as well as some concrete examples of improvements that our additions made.
 
 In the future, we would like to do more rigorous testing of all of the different feature combinations, as well as fine-tuning existing features. For example, initial testing on narrowing down the property feature set showed promising results and could be more thoroughly fleshed out. Additionally, we would like to expand from just classifying intra-sentential event relations to including temporal expression relations and maybe even extracting these temporal entities as well.
 
